@@ -19,6 +19,7 @@ public class SistemaAmbulancia implements ISistema {
     
     @Override
     public TipoRet crearSistemaDeEmergencias(int cantidadCiudades) {
+        listaCiudades = new ListaCiudad(cantidadCiudades);
         if (cantidadCiudades<=0) {
             
             System.out.println("La cantidad de ciudades es inferior a 1.");

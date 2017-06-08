@@ -5,11 +5,32 @@ import sistemaambulancia.dominio.Ciudad;
 public class ListaCiudad {
 
     private NodoListaCiudad inicio;
+    private int topeCiudades;
+    private int cantActual;
 
-    public ListaCiudad() {
+    public ListaCiudad(int tope) {
         this.inicio = null;
+         this.topeCiudades= tope;
+        this.cantActual=0;
     }
 
+    
+     public int getTopeCiudades() {
+        return topeCiudades;
+    }
+
+    public void setTopeCiudades(int topeCiudades) {
+        this.topeCiudades = topeCiudades;
+    }
+
+    public int getCantActual() {
+        return cantActual;
+    }
+
+    public void setCantActual(int cantActual) {
+        this.cantActual = cantActual;
+    }
+    
     public NodoListaCiudad getInicio() {
         return inicio;
     }
@@ -27,6 +48,7 @@ public class ListaCiudad {
         NodoListaCiudad ci = new NodoListaCiudad(ciudad);
         ci.setSiguiente(inicio);
         inicio = ci;
+         cantActual++;
     }
 
     public Ciudad head() {
@@ -35,7 +57,7 @@ public class ListaCiudad {
 
     public ListaCiudad tail() {
 
-        ListaCiudad lista = new ListaCiudad();
+        ListaCiudad lista = new ListaCiudad(this.topeCiudades-1);
         lista.setInicio(inicio.getSiguiente());
         return lista;
 
@@ -79,6 +101,7 @@ public class ListaCiudad {
         return c;
     }
     
+    //pre no estar llena
     public void insertarOrdenado(Ciudad c){
          
          if (this.esVacia()) {
@@ -91,10 +114,15 @@ public class ListaCiudad {
              NodoListaCiudad nc= new NodoListaCiudad(c);
              nc.setSiguiente(aux.getSiguiente());
              aux.setSiguiente(nc);
-             
+              cantActual++;
          }
 
 }
+    
+    public boolean estaLlena(){
+        return cantActual>=topeCiudades;
+    
+    }
     
     
     
