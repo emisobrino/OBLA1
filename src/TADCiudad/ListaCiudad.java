@@ -8,7 +8,7 @@ public class ListaCiudad {
     private int topeCiudades;
     private int cantActual;
     
-    private int numeroprueba;
+    
 
     public ListaCiudad(int tope) {
         this.inicio = null;
