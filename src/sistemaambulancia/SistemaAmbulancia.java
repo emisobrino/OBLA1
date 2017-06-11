@@ -48,7 +48,16 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet destruirSistemaEmergencias() {
-        return TipoRet.NO_IMPLEMENTADA;
+        //Pongo todo en null, entonces luego el sistema con el recolector de basura se encarga de destruir 
+        this.listaAmbulancias = null;
+        this.listaCiudades = null;
+        this.mapa = null;
+        this.listaChoferes = null;
+        
+        //Recolector de Basura (Garbage Collection) 
+        System.gc(); 
+        
+        return TipoRet.OK;
     }
 
     @Override

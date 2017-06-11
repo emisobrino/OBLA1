@@ -12,12 +12,12 @@ public class ListaCiudad {
 
     public ListaCiudad(int tope) {
         this.inicio = null;
-         this.topeCiudades= tope;
+        this.topeCiudades= tope;
         this.cantActual=0;
     }
 
     
-     public int getTopeCiudades() {
+    public int getTopeCiudades() {
         return topeCiudades;
     }
 
@@ -50,7 +50,7 @@ public class ListaCiudad {
         NodoListaCiudad ci = new NodoListaCiudad(ciudad);
         ci.setSiguiente(inicio);
         inicio = ci;
-         cantActual++;
+        cantActual++;
     }
 
     public Ciudad head() {
@@ -106,24 +106,23 @@ public class ListaCiudad {
     //pre no estar llena
     public void insertarOrdenado(Ciudad c){
          
-         if (this.esVacia()) {
-             this.insertarInicio(c);
-         }else{
-             NodoListaCiudad aux =inicio;
-             while (aux.getSiguiente()!=null && aux.getSiguiente().getDato().getId().compareTo(c.getId())==-1 ) {                 
-              aux=aux.getSiguiente() ;
-             }
-             NodoListaCiudad nc= new NodoListaCiudad(c);
-             nc.setSiguiente(aux.getSiguiente());
-             aux.setSiguiente(nc);
-              cantActual++;
-         }
+        if (this.esVacia()) {
+            this.insertarInicio(c);
+        }else{
+            NodoListaCiudad aux =inicio;
+            while (aux.getSiguiente()!=null && aux.getSiguiente().getDato().getId().compareTo(c.getId())==-1 ) {                 
+             aux=aux.getSiguiente() ;
+            }
+            NodoListaCiudad nc= new NodoListaCiudad(c);
+            nc.setSiguiente(aux.getSiguiente());
+            aux.setSiguiente(nc);
+            cantActual++;
+        }
 
 }
     
     public boolean estaLlena(){
         return cantActual>=topeCiudades;
-    
     }
     
     
