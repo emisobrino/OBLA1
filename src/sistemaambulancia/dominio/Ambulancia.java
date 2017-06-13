@@ -1,8 +1,6 @@
-
 package sistemaambulancia.dominio;
 
 import TADChofer.ListaChofer;
-
 
 public class Ambulancia {
     
@@ -14,19 +12,14 @@ public class Ambulancia {
     private ListaChofer choferes;
     private TipoEstado estado;
 
-    public Ambulancia(String id, Ciudad ciudad) {
-        
+    public Ambulancia(String id, Ciudad ciudad) 
+    {
         this.id = id;
         this.ciudad = ciudad;
         this.cantidadViajes = 0;
         this.choferes= new ListaChofer();
         this.estado= TipoEstado.DISPONIBLE;
-        
     }
-    
-    
-    
-
     
     public String getId() {
         return id;
@@ -59,9 +52,4 @@ public class Ambulancia {
     public void setChoferes(ListaChofer choferes) {
         this.choferes = choferes;
     }
-    
-    
-    
-    
-    
 }

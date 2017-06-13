@@ -4,6 +4,9 @@ package sistemaambulancia;
 import TADAmbulancia.ListaAmbulancia;
 import TADChofer.ListaChofer;
 import TADCiudad.ListaCiudad;
+import sistemaambulancia.dominio.Ambulancia;
+import sistemaambulancia.dominio.Ciudad;
+
 
 
 
@@ -61,8 +64,31 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet registrarAmbulancia(String ambulanciaId, int ciudadID) {
-        return TipoRet.NO_IMPLEMENTADA;
+    public TipoRet registrarAmbulancia(String ambulanciaId, int ciudadId) 
+    {
+        //Si no existe el id de ambulancia en la listaAmbulancias entonces creo
+        //la ciudad referenciada a ese ciudadId para enviar por parametro al crear la nueva ambulancia.
+        if(!listaAmbulancias.contains(ambulanciaId))
+        {
+            Ciudad ciu = listaCiudades.buscar(ciudadId);
+            
+            if(ciu != null)
+            {
+                Ambulancia ambu = new Ambulancia(ambulanciaId, ciu);
+                listaAmbulancias.insertarInicio(ambu);
+                return TipoRet.OK;
+            }
+            else
+            {
+                System.out.println("La ciudad  ciudadID no existe.");
+                return TipoRet.ERROR;
+            }
+        }
+        else
+        {
+            System.out.println("Ya existe una ambulancia con identificador ambulanciaID");
+            return TipoRet.ERROR;
+        }
     }
 
     @Override
