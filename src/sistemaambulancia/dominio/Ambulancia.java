@@ -4,21 +4,21 @@ import TADChofer.ListaChofer;
 
 public class Ambulancia {
     
-    private enum TipoEstado {DISPONIBLE, NO_DISPONIBLE, ATENDIENDO_EMERGENCIA};
+    public enum TipoEstado {DISPONIBLE, NO_DISPONIBLE, ATENDIENDO_EMERGENCIA};
     
     private String id;
     private Integer cantidadViajes;
     private Ciudad ciudad;
     private ListaChofer choferes;
-    private TipoEstado estado;
-
+    public TipoEstado Estado;
+    
     public Ambulancia(String id, Ciudad ciudad) 
     {
         this.id = id;
         this.ciudad = ciudad;
         this.cantidadViajes = 0;
-        this.choferes= new ListaChofer();
-        this.estado= TipoEstado.DISPONIBLE;
+        this.choferes = new ListaChofer();
+        this.Estado = TipoEstado.DISPONIBLE;
     }
     
     public String getId() {

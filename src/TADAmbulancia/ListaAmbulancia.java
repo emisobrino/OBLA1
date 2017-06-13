@@ -39,7 +39,7 @@ public class ListaAmbulancia {
     //pre lista no es Vacia
     public Ambulancia head(){
         
-    return inicio.getSiguiente().getDato();
+        return inicio.getSiguiente().getDato();
     
     }
     
@@ -83,7 +83,7 @@ public class ListaAmbulancia {
     }
     
     
-     public Ambulancia buscar(String  Id){
+    public Ambulancia buscar(String  Id){
     
         Ambulancia a=null;
         ListaAmbulancia aux;
@@ -104,21 +104,21 @@ public class ListaAmbulancia {
         
     }
     // pre lista ordenada
-     public void insertarOrdenado(Ambulancia amb){
-         
-         if (this.esVacia()) {
-             this.insertarInicio(amb);
-         }else{
-             NodoListaAmbulancia aux =inicio;
-             while (aux.getSiguiente()!=null && aux.getSiguiente().getDato().getId().compareTo(amb.getId())==-1 ) {                 
-              aux=aux.getSiguiente() ;
-             }
-             NodoListaAmbulancia na= new NodoListaAmbulancia(amb);
-             na.setSiguiente(aux.getSiguiente());
-             aux.setSiguiente(na);
-             
-         }
-     }
+    public void insertarOrdenado(Ambulancia amb){
+
+        if (this.esVacia()) {
+            this.insertarInicio(amb);
+        }else{
+            NodoListaAmbulancia aux =inicio;
+            while (aux.getSiguiente()!=null && aux.getSiguiente().getDato().getId().compareTo(amb.getId())==-1 ) {                 
+             aux=aux.getSiguiente() ;
+            }
+            NodoListaAmbulancia na= new NodoListaAmbulancia(amb);
+        na.setSiguiente(aux.getSiguiente());
+        aux.setSiguiente(na);
+
+    }
+ }
      
      
     

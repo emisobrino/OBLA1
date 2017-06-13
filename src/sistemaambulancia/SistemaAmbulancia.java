@@ -50,7 +50,8 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet destruirSistemaEmergencias() {
+    public TipoRet destruirSistemaEmergencias() 
+    {
         //Pongo todo en null, entonces luego el sistema con el recolector de basura se encarga de destruir 
         this.listaAmbulancias = null;
         this.listaCiudades = null;
@@ -92,8 +93,37 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet deshabilitarAmbulancia(String ambulanciaId) {
-        return TipoRet.NO_IMPLEMENTADA;
+    public TipoRet deshabilitarAmbulancia(String ambulanciaId) 
+    {
+        //Busco ambulancia
+        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaId);
+        
+        //Si no esta vacia entonces encontro la ambulancia
+        if(ambu != null)
+        {
+            //Si la ambulancia no esta en emergencia
+            if(ambu.Estado != Ambulancia.TipoEstado.ATENDIENDO_EMERGENCIA)
+            {
+                //Si la ambulancia no esta en estado no disponible entonces le asigno estado no disponible 
+                if(ambu.Estado != Ambulancia.TipoEstado.NO_DISPONIBLE)
+                {
+                    Ambulancia.TipoEstado ambEstado = ambu.Estado.NO_DISPONIBLE;
+                    return TipoRet.OK;
+                }else
+                {
+                    System.out.println("La ambulancia ambulanciaID ya está en estado NO_DISPONIBLE.");
+                    return TipoRet.ERROR;
+                }
+            }else
+            {
+                System.out.println("No es posible deshabilitar la ambulancia ambulanciaID.");
+                return TipoRet.ERROR;
+            }
+        }else
+        {
+            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            return TipoRet.ERROR;
+        }
     }
 
     @Override
