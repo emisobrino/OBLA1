@@ -52,4 +52,11 @@ public class Ambulancia {
     public void setChoferes(ListaChofer choferes) {
         this.choferes = choferes;
     }
+    
+    @Override
+    public String toString()
+    {
+        return String.format("Datos ambulancia: {0}\n Estado: {1}\n Ciudad: {2}\n #Emergencias: {3}", 
+            this.id, this.Estado, this.ciudad.nombreCiudad, this.cantidadViajes);
+    }
 }

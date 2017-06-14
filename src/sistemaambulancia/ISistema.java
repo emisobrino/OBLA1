@@ -12,11 +12,11 @@ public interface ISistema {
 
     public TipoRet destruirSistemaEmergencias();
     
-    public TipoRet registrarAmbulancia(String ambulanciaId, int ciudadID);
+    public TipoRet registrarAmbulancia(String ambulanciaID, int ciudadID);
 
     public TipoRet eliminarAmbulancia(String ambulanciaID);
     
-    public TipoRet deshabilitarAmbulancia(String ambulanciaId);
+    public TipoRet deshabilitarAmbulancia(String ambulanciaID);
 
     public TipoRet habilitarAmbulancia(String ambulanciaID);
 

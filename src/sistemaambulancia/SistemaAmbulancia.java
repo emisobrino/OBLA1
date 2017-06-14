@@ -65,17 +65,17 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet registrarAmbulancia(String ambulanciaId, int ciudadId) 
+    public TipoRet registrarAmbulancia(String ambulanciaID, int ciudadID) 
     {
         //Si no existe el id de ambulancia en la listaAmbulancias entonces creo
         //la ciudad referenciada a ese ciudadId para enviar por parametro al crear la nueva ambulancia.
-        if(!listaAmbulancias.contains(ambulanciaId))
+        if(!listaAmbulancias.contains(ambulanciaID))
         {
-            Ciudad ciu = listaCiudades.buscar(ciudadId);
+            Ciudad ciu = listaCiudades.buscar(ciudadID);
             
             if(ciu != null)
             {
-                Ambulancia ambu = new Ambulancia(ambulanciaId, ciu);
+                Ambulancia ambu = new Ambulancia(ambulanciaID, ciu);
                 listaAmbulancias.insertarInicio(ambu);
                 return TipoRet.OK;
             }
@@ -93,10 +93,10 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet deshabilitarAmbulancia(String ambulanciaId) 
+    public TipoRet deshabilitarAmbulancia(String ambulanciaID) 
     {
         //Busco ambulancia
-        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaId);
+        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
         
         //Si no esta vacia entonces encontro la ambulancia
         if(ambu != null)
@@ -128,12 +128,46 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet habilitarAmbulancia(String ambulanciaID) {
-        return TipoRet.NO_IMPLEMENTADA;
+        //Busco ambulancia
+        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
+        
+        //Si no esta vacia entonces encontro la ambulancia
+        if(ambu != null)
+        {
+            //Si la ambulancia no esta en estado  disponible entonces le asigno estado disponible 
+            if(ambu.Estado != Ambulancia.TipoEstado.DISPONIBLE)
+            {
+                Ambulancia.TipoEstado ambEstado = ambu.Estado.DISPONIBLE;
+                return TipoRet.OK;
+            }else
+            {
+                System.out.println("La ambulancia ambulanciaID ya está habilitada.");
+                return TipoRet.ERROR;
+            }
+        }else
+        {
+            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            return TipoRet.ERROR;
+        }
     }
 
     @Override
-    public TipoRet buscarAmbulancia(String ambulanciaID) {
-        return TipoRet.NO_IMPLEMENTADA;
+    public TipoRet buscarAmbulancia(String ambulanciaID) 
+    {
+        //Busco ambulancia
+        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
+        
+        //Sil la ambulancia no esta vacia entonces la encontro
+        if(ambu !=null)
+        {
+            //Imprimo en pantalla con el formato establecido en el tostring del objeto
+            System.out.println(ambu.toString());
+            return TipoRet.OK;
+        }else
+        {
+            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            return TipoRet.ERROR;
+        }
     }
 
     @Override
