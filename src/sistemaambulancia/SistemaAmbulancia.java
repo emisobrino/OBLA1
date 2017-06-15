@@ -1,4 +1,3 @@
-
 package sistemaambulancia;
 
 import TADAmbulancia.ListaAmbulancia;
@@ -7,18 +6,12 @@ import TADCiudad.ListaCiudad;
 import sistemaambulancia.dominio.Ambulancia;
 import sistemaambulancia.dominio.Ciudad;
 
-
-
-
-public class SistemaAmbulancia implements ISistema {
-
-    
+public class SistemaAmbulancia implements ISistema 
+{
     private int mapa [][];
     private ListaAmbulancia listaAmbulancias;
     private ListaChofer listaChoferes;
     private ListaCiudad listaCiudades;
-    
-    
     
     @Override
     public TipoRet crearSistemaDeEmergencias(int cantidadCiudades) {
@@ -268,7 +261,4 @@ public class SistemaAmbulancia implements ISistema {
     public TipoRet informeChoferes(String ambulanciaID) {
         return TipoRet.NO_IMPLEMENTADA;
     }
-
-    
-    
 }
