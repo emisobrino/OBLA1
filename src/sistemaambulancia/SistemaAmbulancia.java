@@ -231,7 +231,7 @@ public class SistemaAmbulancia implements ISistema {
         if (listaCiudades.esVacia()) {
             System.out.println("No existen ciudades en el mapa.");
         } else {
-            System.out.println("Ciudades en el mapa");
+            System.out.println("Ciudades en el mapa" + "\n");
             listaCiudades.mostrarCiudades();
         }
         return TipoRet.OK;
@@ -240,17 +240,78 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet agregarRuta(int ciudadOrigen, int ciudadDestino, int minutosViaje) {
-        return TipoRet.NO_IMPLEMENTADA;
+        
+       //se fija si las ciudades con sus ids existen en la lista de ciudades y que la duracion sea mayor a 0
+        if (this.listaCiudades.buscar(ciudadOrigen) == null) {
+            System.out.println("La ciudad " + ciudadOrigen + " no existe.");
+            return TipoRet.ERROR;
+        }else if(this.listaCiudades.buscar(ciudadDestino)==null){
+            System.out.println("La ciudad " + ciudadDestino + " no existe.");
+            return TipoRet.ERROR;
+        }else if(minutosViaje<=0){
+            System.out.println("La duración del viaje debe ser mayor que 0.");
+            return TipoRet.ERROR;
+        // comprueba que la ciudad no sea la misma    
+        }else if (ciudadDestino == ciudadOrigen) {
+            System.out.println("La ciudad Origen es igual a la ciudad Destino");
+            return TipoRet.ERROR;
+        }else{
+         //existen las 2 ciudades y la duracion es mayor a 0
+                mapa[ciudadOrigen][ciudadDestino]=minutosViaje;
+                mapa[ciudadDestino][ciudadOrigen]=minutosViaje;
+                return TipoRet.OK;
+        }
+        
     }
 
     @Override
     public TipoRet modificarDemora(int ciudadOrigen, int ciudadDestino, int minutosViaje) {
-        return TipoRet.NO_IMPLEMENTADA;
+        
+        //se fija si las ciudades con sus ids existen en la lista de ciudades y que la duracion sea mayor a 0
+        if (this.listaCiudades.buscar(ciudadOrigen) == null) {
+            System.out.println("La ciudad " + ciudadOrigen + " no existe.");
+            return TipoRet.ERROR;
+        }else if(this.listaCiudades.buscar(ciudadDestino)==null){
+            System.out.println("La ciudad " + ciudadDestino + " no existe.");
+            return TipoRet.ERROR;
+        }else if(minutosViaje<=0){
+            System.out.println("La duración del viaje debe ser mayor que 0.");
+            return TipoRet.ERROR;
+        // comprueba que la ciudad no sea la misma    
+        }else if (ciudadDestino == ciudadOrigen) {
+            System.out.println("La ciudad Origen es igual a la ciudad Destino");
+            return TipoRet.ERROR;
+        }else{
+         //existen las 2 ciudades y la duracion es mayor a 0
+            // se fija si la posicion a modificar nunca fue agregada,
+            // si es -1, es decir que nunca se agrego llama a agregar ruta, sino la agrega.
+                if (mapa[ciudadOrigen][ciudadDestino]==-1) {
+                    agregarRuta(ciudadOrigen, ciudadDestino, minutosViaje);
+                    return TipoRet.OK;
+            }else{
+                mapa[ciudadOrigen][ciudadDestino]=minutosViaje;
+                mapa[ciudadDestino][ciudadOrigen]=minutosViaje;
+                return TipoRet.OK;
+                }
+                
+        }
+        
     }
 
     @Override
     public TipoRet ambulanciaMasCercana(int ciudadID) {
+        
+        if (this.listaCiudades.buscar(ciudadID)!=null) {
+            //terminar
+        }else{
+            System.out.println("La ciudad "+ciudadID+" no existe.");
+        }
+        
+        
         return TipoRet.NO_IMPLEMENTADA;
+        
+        
+        
     }
 
     @Override
