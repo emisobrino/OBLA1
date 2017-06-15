@@ -35,6 +35,11 @@ public class Ciudad {
     public void setAmbulancias(ListaAmbulancia ambulancias) {
         this.ambulancias = ambulancias;
     }
+
+    @Override
+    public String toString() {
+        return String.format("{ 0 } - { 1 }", this.getId(), this.getNombreCiudad());
+    }
     
     
     

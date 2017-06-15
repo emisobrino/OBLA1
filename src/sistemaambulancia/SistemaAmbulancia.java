@@ -180,12 +180,41 @@ public class SistemaAmbulancia implements ISistema
 
     @Override
     public TipoRet agregarCiudad(String ciudadNombre) {
-        return TipoRet.NO_IMPLEMENTADA;
+       //controlar que el mapa no este lleno  y no se puedan agregar mas ciudades
+       
+       
+       //verifica que el mapa no este vacio, que la lista de ciudades no este llena
+       if (mapa.length>0 && !listaCiudades.estaLlena()) {
+          //compruebo que no exista esa ciudad con ese nombre  
+           if (listaCiudades.contains(ciudadNombre)) {
+                System.out.println("Ya existe una ciudad con ese nombre");
+                return TipoRet.ERROR;
+           }else{
+               //inserto ciudad a la lista de ciudades
+                Ciudad c= new Ciudad(ciudadNombre);
+                listaCiudades.insertarInicio(c);
+                return TipoRet.OK;
+                
+            }
+        }else{
+           System.out.println("“No se pueden ingresar la ciudadNombre al sistema por no tener más capacidad.");
+           return TipoRet.ERROR;
+           
+       }
+        
     }
 
     @Override
     public TipoRet listarCiudades() {
-        return TipoRet.NO_IMPLEMENTADA;
+        
+        if (listaCiudades.esVacia()) {
+            System.out.println("No existen ciudades en el mapa.");
+        }else{
+            System.out.println("Ciudades en el mapa");
+            listaCiudades.mostrarOrdenado();
+        }
+        return TipoRet.OK;
+        
     }
 
     @Override

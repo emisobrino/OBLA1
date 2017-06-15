@@ -1,4 +1,6 @@
 package TADCiudad;
+//prueba git
+
 
 import sistemaambulancia.dominio.Ciudad;
 
@@ -124,9 +126,10 @@ public class ListaCiudad {
     public boolean estaLlena(){
         return cantActual>=topeCiudades;
     }
-    
-    
-    
+
+    public void mostrarOrdenado() {
+       //implementar muestra ordenado o solo mostrar
+    }
     
     
     
