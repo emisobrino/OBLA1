@@ -192,7 +192,7 @@ public class SistemaAmbulancia implements ISistema
            }else{
                //inserto ciudad a la lista de ciudades
                 Ciudad c= new Ciudad(ciudadNombre);
-                listaCiudades.insertarInicio(c);
+                listaCiudades.insertarOrdenado(c);
                 return TipoRet.OK;
                 
             }
