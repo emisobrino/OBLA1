@@ -127,8 +127,15 @@ public class ListaCiudad {
         return cantActual>=topeCiudades;
     }
 
-    public void mostrarOrdenado() {
-       //implementar muestra ordenado o solo mostrar
+    
+    public void mostrarCiudades() {
+    //pre: se asume que la lista de ciudades no es vacia
+       
+    NodoListaCiudad aux=inicio;
+    while(aux!=null){
+            System.out.println(aux.getDato().toString());//mostramos el dato
+            aux=aux.getSiguiente();
+        }
     }
     
     

@@ -199,7 +199,7 @@ public class SistemaAmbulancia implements ISistema {
            }else{
                //inserto ciudad a la lista de ciudades
                 Ciudad c= new Ciudad(ciudadNombre);
-                listaCiudades.insertarInicio(c);
+                listaCiudades.insertarOrdenado(c);
                 return TipoRet.OK;
                 
             }
@@ -218,7 +218,7 @@ public class SistemaAmbulancia implements ISistema {
             System.out.println("No existen ciudades en el mapa.");
         }else{
             System.out.println("Ciudades en el mapa");
-            listaCiudades.mostrarOrdenado();
+            listaCiudades.mostrarCiudades();
         }
         return TipoRet.OK;
         
