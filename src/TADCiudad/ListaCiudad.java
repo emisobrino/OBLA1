@@ -1,6 +1,4 @@
 package TADCiudad;
-//prueba git
-
 
 import sistemaambulancia.dominio.Ciudad;
 
@@ -9,16 +7,13 @@ public class ListaCiudad {
     private NodoListaCiudad inicio;
     private int topeCiudades;
     private int cantActual;
-    
-    
 
     public ListaCiudad(int tope) {
         this.inicio = null;
-        this.topeCiudades= tope;
-        this.cantActual=0;
+        this.topeCiudades = tope;
+        this.cantActual = 0;
     }
 
-    
     public int getTopeCiudades() {
         return topeCiudades;
     }
@@ -34,7 +29,7 @@ public class ListaCiudad {
     public void setCantActual(int cantActual) {
         this.cantActual = cantActual;
     }
-    
+
     public NodoListaCiudad getInicio() {
         return inicio;
     }
@@ -61,7 +56,7 @@ public class ListaCiudad {
 
     public ListaCiudad tail() {
 
-        ListaCiudad lista = new ListaCiudad(this.topeCiudades-1);
+        ListaCiudad lista = new ListaCiudad(this.topeCiudades - 1);
         lista.setInicio(inicio.getSiguiente());
         return lista;
 
@@ -85,59 +80,55 @@ public class ListaCiudad {
         return encontre;
 
     }
-    
-    public Ciudad buscar(int id){
-    
-        Ciudad c= null;
+
+    public Ciudad buscar(int id) {
+
+        Ciudad c = null;
         ListaCiudad aux;
-        boolean encontre=false;
-        aux= this;
-        
-        while (!aux.esVacia()&& !encontre) {            
-            c= aux.head();
-            if (c.getId()==id) {
-                encontre=true;
-            }else{
-            aux=aux.tail();
-            c=null;
+        boolean encontre = false;
+        aux = this;
+
+        while (!aux.esVacia() && !encontre) {
+            c = aux.head();
+            if (c.getId() == id) {
+                encontre = true;
+            } else {
+                aux = aux.tail();
+                c = null;
             }
         }
         return c;
     }
-    
+
     //pre no estar llena
-    public void insertarOrdenado(Ciudad c){
-         
+    public void insertarOrdenado(Ciudad c) {
+
         if (this.esVacia()) {
             this.insertarInicio(c);
-        }else{
-            NodoListaCiudad aux =inicio;
-            while (aux.getSiguiente()!=null && aux.getSiguiente().getDato().getId().compareTo(c.getId())==-1 ) {                 
-             aux=aux.getSiguiente() ;
+        } else {
+            NodoListaCiudad aux = inicio;
+            while (aux.getSiguiente() != null && aux.getSiguiente().getDato().getId().compareTo(c.getId()) == -1) {
+                aux = aux.getSiguiente();
             }
-            NodoListaCiudad nc= new NodoListaCiudad(c);
+            NodoListaCiudad nc = new NodoListaCiudad(c);
             nc.setSiguiente(aux.getSiguiente());
             aux.setSiguiente(nc);
             cantActual++;
         }
 
-}
-    
-    public boolean estaLlena(){
-        return cantActual>=topeCiudades;
     }
 
-    
+    public boolean estaLlena() {
+        return cantActual >= topeCiudades;
+    }
+
     public void mostrarCiudades() {
-    //pre: se asume que la lista de ciudades no es vacia
-       
-    NodoListaCiudad aux=inicio;
-    while(aux!=null){
+        //pre: se asume que la lista de ciudades no es vacia
+
+        NodoListaCiudad aux = inicio;
+        while (aux != null) {
             System.out.println(aux.getDato().toString());//mostramos el dato
-            aux=aux.getSiguiente();
+            aux = aux.getSiguiente();
         }
     }
-    
-    
-    
 }

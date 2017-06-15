@@ -10,7 +10,7 @@ public class Ambulancia {
     private Integer cantidadViajes;
     private Ciudad ciudad;
     private ListaChofer choferes;
-    public TipoEstado Estado;
+    private TipoEstado estado;
     
     public Ambulancia(String id, Ciudad ciudad) 
     {
@@ -18,7 +18,7 @@ public class Ambulancia {
         this.ciudad = ciudad;
         this.cantidadViajes = 0;
         this.choferes = new ListaChofer();
-        this.Estado = TipoEstado.DISPONIBLE;
+        this.estado = TipoEstado.DISPONIBLE;
     }
     
     public String getId() {
@@ -52,11 +52,19 @@ public class Ambulancia {
     public void setChoferes(ListaChofer choferes) {
         this.choferes = choferes;
     }
+
+    public TipoEstado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(TipoEstado Estado) {
+        this.estado = Estado;
+    }
     
     @Override
     public String toString()
     {
         return String.format("Datos ambulancia: {0}\n Estado: {1}\n Ciudad: {2}\n #Emergencias: {3}", 
-            this.id, this.Estado, this.ciudad.nombreCiudad, this.cantidadViajes);
+            this.id, this.estado, this.ciudad.nombreCiudad, this.cantidadViajes);
     }
 }

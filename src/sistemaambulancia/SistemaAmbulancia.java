@@ -6,36 +6,36 @@ import TADCiudad.ListaCiudad;
 import sistemaambulancia.dominio.Ambulancia;
 import sistemaambulancia.dominio.Ciudad;
 
-public class SistemaAmbulancia implements ISistema 
-{
-    private int mapa [][];
+public class SistemaAmbulancia implements ISistema {
+
+    private int mapa[][];
     private ListaAmbulancia listaAmbulancias;
     private ListaChofer listaChoferes;
     private ListaCiudad listaCiudades;
-    
+
     @Override
     public TipoRet crearSistemaDeEmergencias(int cantidadCiudades) {
         listaCiudades = new ListaCiudad(cantidadCiudades);
-        if (cantidadCiudades<=0) {
-            
+        if (cantidadCiudades <= 0) {
+
             System.out.println("La cantidad de ciudades es inferior a 1.");
             return TipoRet.ERROR;
-        }else{
-            mapa= new int[cantidadCiudades][cantidadCiudades];
+        } else {
+            mapa = new int[cantidadCiudades][cantidadCiudades];
             for (int i = 0; i < mapa.length; i++) {
-            for (int j = 0; j < mapa[i].length; j++) {
-                if (i==j) {
-                    mapa[i][j]=0;
-                }else{
-                    mapa[i][j]=-1;
+                for (int j = 0; j < mapa[i].length; j++) {
+                    if (i == j) {
+                        mapa[i][j] = 0;
+                    } else {
+                        mapa[i][j] = -1;
+                    }
                 }
             }
-        }
             return TipoRet.OK;
         }
-                
+
     }
-    
+
     @Override
     public TipoRet eliminarAmbulancia(String ambulanciaID) {
         return TipoRet.NO_IMPLEMENTADA;
@@ -43,77 +43,63 @@ public class SistemaAmbulancia implements ISistema
     }
 
     @Override
-    public TipoRet destruirSistemaEmergencias() 
-    {
+    public TipoRet destruirSistemaEmergencias() {
         //Pongo todo en null, entonces luego el sistema con el recolector de basura se encarga de destruir 
         this.listaAmbulancias = null;
         this.listaCiudades = null;
         this.mapa = null;
         this.listaChoferes = null;
-        
+
         //Recolector de Basura (Garbage Collection) 
-        System.gc(); 
-        
+        System.gc();
+
         return TipoRet.OK;
     }
 
     @Override
-    public TipoRet registrarAmbulancia(String ambulanciaID, int ciudadID) 
-    {
+    public TipoRet registrarAmbulancia(String ambulanciaID, int ciudadID) {
         //Si no existe el id de ambulancia en la listaAmbulancias entonces creo
         //la ciudad referenciada a ese ciudadId para enviar por parametro al crear la nueva ambulancia.
-        if(!listaAmbulancias.contains(ambulanciaID))
-        {
+        if (!listaAmbulancias.contains(ambulanciaID)) {
             Ciudad ciu = listaCiudades.buscar(ciudadID);
-            
-            if(ciu != null)
-            {
+
+            if (ciu != null) {
                 Ambulancia ambu = new Ambulancia(ambulanciaID, ciu);
-                listaAmbulancias.insertarInicio(ambu);
+                listaAmbulancias.insertarOrdenado(ambu);
+                ciu.getAmbulancias().insertarOrdenado(ambu);
                 return TipoRet.OK;
-            }
-            else
-            {
+            } else {
                 System.out.println("La ciudad  ciudadID no existe.");
                 return TipoRet.ERROR;
             }
-        }
-        else
-        {
+        } else {
             System.out.println("Ya existe una ambulancia con identificador ambulanciaID");
             return TipoRet.ERROR;
         }
     }
 
     @Override
-    public TipoRet deshabilitarAmbulancia(String ambulanciaID) 
-    {
+    public TipoRet deshabilitarAmbulancia(String ambulanciaID) {
         //Busco ambulancia
         Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
-        
+
         //Si no esta vacia entonces encontro la ambulancia
-        if(ambu != null)
-        {
+        if (ambu != null) {
             //Si la ambulancia no esta en emergencia
-            if(ambu.Estado != Ambulancia.TipoEstado.ATENDIENDO_EMERGENCIA)
-            {
+            if (ambu.getEstado() != Ambulancia.TipoEstado.ATENDIENDO_EMERGENCIA) {
                 //Si la ambulancia no esta en estado no disponible entonces le asigno estado no disponible 
-                if(ambu.Estado != Ambulancia.TipoEstado.NO_DISPONIBLE)
-                {
-                    Ambulancia.TipoEstado ambEstado = ambu.Estado.NO_DISPONIBLE;
+                if (ambu.getEstado() != Ambulancia.TipoEstado.NO_DISPONIBLE) {
+                    ambu.setEstado(Ambulancia.TipoEstado.NO_DISPONIBLE);
                     return TipoRet.OK;
-                }else
-                {
+                } else {
                     System.out.println("La ambulancia ambulanciaID ya está en estado NO_DISPONIBLE.");
                     return TipoRet.ERROR;
                 }
-            }else
-            {
+            } else {
                 System.out.println("No es posible deshabilitar la ambulancia ambulanciaID.");
                 return TipoRet.ERROR;
             }
-        }else
-        {
+        } else {
             System.out.println("No existe una ambulancia con identificador ambulanciaID");
             return TipoRet.ERROR;
         }
@@ -123,41 +109,34 @@ public class SistemaAmbulancia implements ISistema
     public TipoRet habilitarAmbulancia(String ambulanciaID) {
         //Busco ambulancia
         Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
-        
+
         //Si no esta vacia entonces encontro la ambulancia
-        if(ambu != null)
-        {
+        if (ambu != null) {
             //Si la ambulancia no esta en estado  disponible entonces le asigno estado disponible 
-            if(ambu.Estado != Ambulancia.TipoEstado.DISPONIBLE)
-            {
-                Ambulancia.TipoEstado ambEstado = ambu.Estado.DISPONIBLE;
+            if (ambu.getEstado() != Ambulancia.TipoEstado.DISPONIBLE) {
+                ambu.setEstado(Ambulancia.TipoEstado.DISPONIBLE);
                 return TipoRet.OK;
-            }else
-            {
+            } else {
                 System.out.println("La ambulancia ambulanciaID ya está habilitada.");
                 return TipoRet.ERROR;
             }
-        }else
-        {
+        } else {
             System.out.println("No existe una ambulancia con identificador ambulanciaID");
             return TipoRet.ERROR;
         }
     }
 
     @Override
-    public TipoRet buscarAmbulancia(String ambulanciaID) 
-    {
+    public TipoRet buscarAmbulancia(String ambulanciaID) {
         //Busco ambulancia
         Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
-        
+
         //Sil la ambulancia no esta vacia entonces la encontro
-        if(ambu !=null)
-        {
+        if (ambu != null) {
             //Imprimo en pantalla con el formato establecido en el tostring del objeto
             System.out.println(ambu.toString());
             return TipoRet.OK;
-        }else
-        {
+        } else {
             System.out.println("No existe una ambulancia con identificador ambulanciaID");
             return TipoRet.ERROR;
         }
@@ -165,56 +144,98 @@ public class SistemaAmbulancia implements ISistema
 
     @Override
     public TipoRet informeAmbulancia() {
-        return TipoRet.NO_IMPLEMENTADA;
+        //Si la lista de ambulancias no esta vacia entonces llamo a mostrarAmbulancias
+        if (!listaAmbulancias.esVacia()) 
+        {
+            System.out.println("Listado de ambulancias:");
+            listaAmbulancias.mostrarAmbulancias();
+        } 
+        else 
+        {
+            System.out.println("No se han ingresado ambulancias");
+        }
+
+        return TipoRet.OK;
     }
 
+    //2.2.7 INFORME AMBULANCIAS POR CIUDAD
     @Override
     public TipoRet informeAmbulancia(int ciudadID) {
-        return TipoRet.NO_IMPLEMENTADA;
+        //Busco ambulancia
+        Ciudad ciu = listaCiudades.buscar(ciudadID);
+
+        //Sil la ciudad no esta vacia entonces 
+        if (ciu != null) {
+            listaAmbulancias.mostrarAmbulanciasPorCiudad(ciudadID);
+            return TipoRet.OK;
+        } else {
+            System.out.println("La ciudadID no existe.");
+            return TipoRet.ERROR;
+        }
     }
 
     @Override
     public TipoRet cambiarUbicacion(String ambulanciaID, int ciudadID) {
-        return TipoRet.NO_IMPLEMENTADA;
+        //Busco ambulancia
+        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
+        Ciudad ciuNueva = listaCiudades.buscar(ciudadID);
+        
+        if(ambu != null)
+        {
+            Ciudad ciuVieja = ambu.getCiudad();
+            
+            if(ciuNueva != null)
+            {
+                ambu.setCiudad(ciuNueva);
+                ciuNueva.getAmbulancias().insertarOrdenado(ambu);
+                //BORRO AMBULANCIA EN lista ambulancias de la CIUDAD VIEJA
+                return TipoRet.OK;
+            }else{
+                System.out.println("La ciudad ciudadID no existe");
+                return TipoRet.ERROR;
+            }
+        }else{
+            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            return TipoRet.ERROR;
+        }
     }
 
     @Override
     public TipoRet agregarCiudad(String ciudadNombre) {
-       //controlar que el mapa no este lleno  y no se puedan agregar mas ciudades
-       
-       
-       //verifica que el mapa no este vacio, que la lista de ciudades no este llena
-       if (mapa.length>0 && !listaCiudades.estaLlena()) {
-          //compruebo que no exista esa ciudad con ese nombre  
-           if (listaCiudades.contains(ciudadNombre)) {
+        //controlar que el mapa no este lleno  y no se puedan agregar mas ciudades
+
+        //verifica que el mapa no este vacio, que la lista de ciudades no este llena
+        if (mapa.length > 0 && !listaCiudades.estaLlena()) {
+            //compruebo que no exista esa ciudad con ese nombre  
+            if (listaCiudades.contains(ciudadNombre)) {
                 System.out.println("Ya existe una ciudad con ese nombre");
                 return TipoRet.ERROR;
-           }else{
-               //inserto ciudad a la lista de ciudades
-                Ciudad c= new Ciudad(ciudadNombre);
+            } else {
+                //inserto ciudad a la lista de ciudades
+                Ciudad c = new Ciudad(ciudadNombre);
                 listaCiudades.insertarOrdenado(c);
                 return TipoRet.OK;
-                
+
             }
-        }else{
-           System.out.println("“No se pueden ingresar la ciudadNombre al sistema por no tener más capacidad.");
-           return TipoRet.ERROR;
-           
-       }
-        
+        } else {
+            System.out.println("“No se pueden ingresar la ciudadNombre al sistema por no tener más capacidad.");
+            return TipoRet.ERROR;
+
+        }
+
     }
 
     @Override
     public TipoRet listarCiudades() {
-        
+
         if (listaCiudades.esVacia()) {
             System.out.println("No existen ciudades en el mapa.");
-        }else{
+        } else {
             System.out.println("Ciudades en el mapa");
             listaCiudades.mostrarCiudades();
         }
         return TipoRet.OK;
-        
+
     }
 
     @Override

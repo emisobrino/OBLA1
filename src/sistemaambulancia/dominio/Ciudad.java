@@ -40,7 +40,4 @@ public class Ciudad {
     public String toString() {
         return String.format("{0}> - <{1}>", this.getId(), this.getNombreCiudad());
     }
-    
-    
-    
 }
