@@ -141,7 +141,7 @@ public class ListaAmbulancia {
         NodoListaAmbulancia aux = inicio;
         int cantidadAmbulanciasEnCiudad = 0; //Contador de ambulancias en ciudad dada por parametro
         
-        //Si el nodo inicio no esta vacio
+        //Mientras el nodo aux no sea vacio
         while (aux != null) {
             //Si la ambulancia que esta en el nodo, el id de su ciudad es igual al parametro
             if(aux.getDato().getCiudad().getId() == ciudadID)

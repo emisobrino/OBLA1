@@ -1,10 +1,8 @@
-
 package TADChofer;
 
 import sistemaambulancia.dominio.Chofer;
 
-
-class NodoListaChofer {
+public class NodoListaChofer {
     
     private Chofer dato;
     private NodoListaChofer siguiente;
@@ -14,10 +12,6 @@ class NodoListaChofer {
         this.siguiente = null;
     }
 
-    
-    
-    
-    
     public Chofer getDato() {
         return dato;
     }
@@ -33,8 +27,4 @@ class NodoListaChofer {
     public void setSiguiente(NodoListaChofer siguiente) {
         this.siguiente = siguiente;
     }
-    
-    
-    
-    
 }

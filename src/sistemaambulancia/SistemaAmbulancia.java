@@ -4,6 +4,7 @@ import TADAmbulancia.ListaAmbulancia;
 import TADChofer.ListaChofer;
 import TADCiudad.ListaCiudad;
 import sistemaambulancia.dominio.Ambulancia;
+import sistemaambulancia.dominio.Chofer;
 import sistemaambulancia.dominio.Ciudad;
 
 public class SistemaAmbulancia implements ISistema {
@@ -161,10 +162,10 @@ public class SistemaAmbulancia implements ISistema {
     //2.2.7 INFORME AMBULANCIAS POR CIUDAD
     @Override
     public TipoRet informeAmbulancia(int ciudadID) {
-        //Busco ambulancia
+        //Busco ciudad
         Ciudad ciu = listaCiudades.buscar(ciudadID);
 
-        //Sil la ciudad no esta vacia entonces 
+        //Sil la ciudad no esta vacia entonces  muestro ambulancias en esa ciudad
         if (ciu != null) {
             listaAmbulancias.mostrarAmbulanciasPorCiudad(ciudadID);
             return TipoRet.OK;
@@ -330,17 +331,55 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet registrarChofer(String ambulanciaID, String nombre, String cedula) {
+    public TipoRet registrarChofer(String ambulanciaID, String nombre, String cedula) 
+    {
+        //Busco ambulancia
+        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
+        
+        //Si la ambulancia no esta vacia entonces encontro la ambulancia
+        if(ambu != null)
+        {
+            //Si no existe ya un chofer con esa cedula 
+            if(!listaChoferes.contains(cedula))
+            {
+                //Creo chofer y lo agrego a la lista
+                Chofer chofer = new Chofer(cedula, nombre, ambulanciaID);
+                listaChoferes.insertarOrdenado(chofer);
+                return TipoRet.OK;
+            }else{
+                System.out.println("Ya existe un chofer con esa cedula habilitado para conducir una ambulancia");
+                return TipoRet.ERROR;
+            }
+        }else{
+            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            return TipoRet.ERROR;
+        }
+    }
+
+    @Override
+    public TipoRet eliminarChofer(String ambulanciaID, String cedula) 
+    {
+        
         return TipoRet.NO_IMPLEMENTADA;
     }
 
     @Override
-    public TipoRet eliminarChofer(String ambulanciaID, String cedula) {
-        return TipoRet.NO_IMPLEMENTADA;
-    }
-
-    @Override
-    public TipoRet informeChoferes(String ambulanciaID) {
-        return TipoRet.NO_IMPLEMENTADA;
+    public TipoRet informeChoferes(String ambulanciaID) 
+    {
+        //Busco ambulancia
+        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
+        
+        //Si la ambulancia no esta vacia entonces encontro la ambulancia
+        if(ambu != null)
+        {
+            System.out.println("Informe choferes de <" + ambulanciaID + ">");
+            
+            //Muestro lista de choferes habilitados en esta ambulancia 
+            ambu.getChoferes().mostrarChoferes();
+            return TipoRet.OK;
+        }else{
+            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            return TipoRet.ERROR;
+        }
     }
 }
