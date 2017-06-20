@@ -134,12 +134,9 @@ public class ListaChofer {
         //Creo nodo que voy a usar para recorrer
         NodoListaChofer nodoAnterior = inicio;
         
-        //Si el nodo esta vacio entonces devuelvo eliminado = false
-        if (nodoAnterior == null) 
-        { 
-            return false;
-        } 
-        
+        //Si el nodo esta vacio entonces devuelvo false 
+        if (nodoAnterior == null) return false;
+         
         //Si el chofer que hay en el nodo es igual al chofer que busco por cedula
         //Entonces establesco el inicio como el siguiente
         else if (nodoAnterior.getDato() == buscar(cedula)) 
@@ -166,18 +163,20 @@ public class ListaChofer {
                 break;
             }
             
+            //Guardo en nodoanterior el valor del proximo nodo, para seguir recorriendo la lista
             nodoAnterior = nodoSiguiente;
         }
         
         //Guardo de nuevo el valor del nodo siguiente
         NodoListaChofer nodoSiguiente = nodoAnterior.getSiguiente();
-        
         //Al nodo anterior le seteo el nuevo valor siguiente, que va ser el nodo que le sigue del que quiero borrar
         nodoAnterior.setSiguiente(nodoSiguiente.getSiguiente());
-        
         //Al nodo que quiero borrar le seteo su siguiente como null, para que pierda enlaze con la lista
         nodoSiguiente.setSiguiente(null);
         
+        //Recolector de Basura (Garbage Collection) 
+        System.gc();
+        //Devuelvo verdadero si se ejecuta correctamente la funcion
         return true;
     }
 }

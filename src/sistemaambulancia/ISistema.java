@@ -1,13 +1,10 @@
-
 package sistemaambulancia;
-
 
 public interface ISistema {
 
     public enum TipoRet {OK, NO_IMPLEMENTADA, ERROR;}
 
     
-
     public TipoRet crearSistemaDeEmergencias(int cantidadCiudades);
 
     public TipoRet destruirSistemaEmergencias();

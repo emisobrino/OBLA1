@@ -15,10 +15,11 @@ public class SistemaAmbulancia implements ISistema {
     private ListaCiudad listaCiudades;
 
     @Override
-    public TipoRet crearSistemaDeEmergencias(int cantidadCiudades) {
+    public TipoRet crearSistemaDeEmergencias(int cantidadCiudades) 
+    {
         listaCiudades = new ListaCiudad(cantidadCiudades);
+        
         if (cantidadCiudades <= 0) {
-
             System.out.println("La cantidad de ciudades es inferior a 1.");
             return TipoRet.ERROR;
         } else {
@@ -34,13 +35,28 @@ public class SistemaAmbulancia implements ISistema {
             }
             return TipoRet.OK;
         }
-
     }
 
     @Override
     public TipoRet eliminarAmbulancia(String ambulanciaID) {
-        return TipoRet.NO_IMPLEMENTADA;
+        //Busco ambulancia
+        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
 
+        //Si no esta vacia entonces encontro la ambulancia
+        if (ambu != null) {
+            //Si no esta en estado de emergencia entonces borro la ambulancia
+            if(ambu.getEstado() != Ambulancia.TipoEstado.ATENDIENDO_EMERGENCIA)
+            {
+                listaAmbulancias.eliminarAmbulancia(ambulanciaID);
+                return TipoRet.OK;
+            }else{
+                System.out.println("No es posible eliminar la ambulancia ambulanciaID");
+                return TipoRet.ERROR;
+            }
+        } else {
+            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            return TipoRet.ERROR;
+        }
     }
 
     @Override
@@ -176,20 +192,21 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet cambiarUbicacion(String ambulanciaID, int ciudadID) {
-        //Busco ambulancia
+    public TipoRet cambiarUbicacion(String ambulanciaID, int ciudadID) 
+    {
+        //Busco ambulancia y ciudad
         Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
         Ciudad ciuNueva = listaCiudades.buscar(ciudadID);
+        //Guardo el valor de la ciudad de donde parte la ambulancia
+        Ciudad ciuVieja = ambu.getCiudad();
         
         if(ambu != null)
         {
-            Ciudad ciuVieja = ambu.getCiudad();
-            
             if(ciuNueva != null)
             {
-                ambu.setCiudad(ciuNueva);
-                ciuNueva.getAmbulancias().insertarOrdenado(ambu);
-                //BORRO AMBULANCIA EN lista ambulancias de la CIUDAD VIEJA
+                ambu.setCiudad(ciuNueva);   //SETEO CIUDAD DE DESTINO
+                ciuNueva.getAmbulancias().insertarOrdenado(ambu);  //A LA CIUDAD DE DESTINO LE AGREGO LA AMBULANCIA
+                ciuVieja.getAmbulancias().eliminarAmbulancia(ambulanciaID);   //A LA CIUDAD VIEJA LE QUITO LA AMBULANCIA
                 return TipoRet.OK;
             }else{
                 System.out.println("La ciudad ciudadID no existe");
