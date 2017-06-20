@@ -274,12 +274,11 @@ public class SistemaAmbulancia implements ISistema {
             System.out.println("La ciudad Origen es igual a la ciudad Destino");
             return TipoRet.ERROR;
         }else{
-         //existen las 2 ciudades y la duracion es mayor a 0
-                mapa[ciudadOrigen][ciudadDestino]=minutosViaje;
-                mapa[ciudadDestino][ciudadOrigen]=minutosViaje;
-                return TipoRet.OK;
+        //existen las 2 ciudades y la duracion es mayor a 0
+            mapa[ciudadOrigen][ciudadDestino]=minutosViaje;
+            mapa[ciudadDestino][ciudadOrigen]=minutosViaje;
+            return TipoRet.OK;
         }
-        
     }
 
     @Override
@@ -300,20 +299,18 @@ public class SistemaAmbulancia implements ISistema {
             System.out.println("La ciudad Origen es igual a la ciudad Destino");
             return TipoRet.ERROR;
         }else{
-         //existen las 2 ciudades y la duracion es mayor a 0
-            // se fija si la posicion a modificar nunca fue agregada,
-            // si es -1, es decir que nunca se agrego llama a agregar ruta, sino la agrega.
-                if (mapa[ciudadOrigen][ciudadDestino]==-1) {
-                    agregarRuta(ciudadOrigen, ciudadDestino, minutosViaje);
-                    return TipoRet.OK;
+            //existen las 2 ciudades y la duracion es mayor a 0
+            //se fija si la posicion a modificar nunca fue agregada,
+            //si es -1, es decir que nunca se agrego llama a agregar ruta, sino la agrega.
+            if (mapa[ciudadOrigen][ciudadDestino]== -1) {
+                agregarRuta(ciudadOrigen, ciudadDestino, minutosViaje);
+                return TipoRet.OK;
             }else{
                 mapa[ciudadOrigen][ciudadDestino]=minutosViaje;
                 mapa[ciudadDestino][ciudadOrigen]=minutosViaje;
                 return TipoRet.OK;
                 }
-                
         }
-        
     }
 
     @Override
@@ -325,11 +322,7 @@ public class SistemaAmbulancia implements ISistema {
             System.out.println("La ciudad "+ciudadID+" no existe.");
         }
         
-        
         return TipoRet.NO_IMPLEMENTADA;
-        
-        
-        
     }
 
     @Override
@@ -339,6 +332,7 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet informeCiudades() {
+        
         return TipoRet.NO_IMPLEMENTADA;
     }
 
@@ -376,8 +370,26 @@ public class SistemaAmbulancia implements ISistema {
     @Override
     public TipoRet eliminarChofer(String ambulanciaID, String cedula) 
     {
+        //Busco ambulancia
+        Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
+        //Busco chofer
+        Chofer chofer = listaChoferes.buscar(cedula);
         
-        return TipoRet.NO_IMPLEMENTADA;
+        //Si la ambulancia no esta vacia entonces encontro la ambulancia
+        if(ambu != null)
+        {
+            if(chofer != null){
+                //Lo elimino de la lista de choferes haiblitados para esta ambulancia
+                ambu.getChoferes().eliminarChofer(cedula);
+                return TipoRet.OK;
+            }else{
+                System.out.println("No existe ese chofer con esa cedula");
+                return TipoRet.ERROR;
+            }
+        }else{
+            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            return TipoRet.ERROR;
+        }
     }
 
     @Override

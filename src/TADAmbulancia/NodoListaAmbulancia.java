@@ -1,8 +1,6 @@
-
 package TADAmbulancia;
 
 import sistemaambulancia.dominio.Ambulancia;
-
 
 public class NodoListaAmbulancia {
    
@@ -14,9 +12,6 @@ public class NodoListaAmbulancia {
         this.siguiente=null;
     }
 
-    
-    
-    
     public Ambulancia getDato() {
         return dato;
     }
@@ -32,7 +27,4 @@ public class NodoListaAmbulancia {
     public void setSiguiente(NodoListaAmbulancia siguiente) {
         this.siguiente = siguiente;
     }
-    
-    
-    
 }

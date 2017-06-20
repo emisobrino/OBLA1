@@ -1,8 +1,6 @@
-
 package sistemaambulancia.dominio;
 
 import TADAmbulancia.ListaAmbulancia;
-
 
 public class Ciudad {
     
@@ -15,7 +13,6 @@ public class Ciudad {
         this.id=id++;
     }
 
-    
     public Integer getId() {
         return id;
     }
