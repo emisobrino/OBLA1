@@ -328,7 +328,7 @@ public class SistemaAmbulancia implements ISistema {
                 int camino = 0;
                 int columnas = mapa[0].length;
                 int columna = 0;
-                int suma = 0;
+                int suma;
                 int minimo = 9999;
 
                 for (int i = 0; i < columnas; i++) {
@@ -340,6 +340,10 @@ public class SistemaAmbulancia implements ISistema {
                         }
                     }
                 }
+                
+                System.out.println("ciudad origen : " + ciudadOrigen 
+                    +  "Escala : " + columna + "  destino :" + ciudadDestino + "  duracion :" + minimo
+                );
                 return TipoRet.OK;
             } else {
                 System.out.println("La ciudad ciudadDestino no existe");
