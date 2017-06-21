@@ -440,7 +440,31 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet ciudadesEnRadio(int ciudadID, int duracionViaje) {
+       
+        if (this.listaCiudades.buscar(ciudadID)!=null) {
+            if (duracionViaje>0) {
+                
+                System.out.println("Ciudades en radio de <"+duracionViaje+"> minutos a la ciudad: "+ciudadID+": ");
+
+                for (int i = 0; i < mapa.length; i++) {
+                    if (mapa[ciudadID][i]<duracionViaje && mapa[ciudadID][i]!=-1) {
+                        System.out.println( "\n \t Ciudad: "+i+" a "+ mapa[ciudadID][i]+" minutos");
+                    }else{
+                        System.out.println(" No hay rutas directas");
+                    }
+                }
+            }else{
+                System.out.println("La duración del viaje debe ser mayor que 0.");
+                return TipoRet.ERROR;
+            }
+            
+            
+        }else{
         
+            System.out.println("La ciudad "+ciudadID+" no existe.");
+            return TipoRet.ERROR;
+            
+        }
         
         
         return TipoRet.NO_IMPLEMENTADA;
