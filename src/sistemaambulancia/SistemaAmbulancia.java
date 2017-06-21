@@ -373,7 +373,7 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet informeCiudades() {
-
+        
         return TipoRet.NO_IMPLEMENTADA;
     }
 
