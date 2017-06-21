@@ -131,4 +131,19 @@ public class ListaCiudad {
             aux = aux.getSiguiente();
         }
     }
+    
+    public void vaciarLista() 
+    {
+       this.setInicio(null);
+       this.cantActual = 0;
+    }
+    
+    public void eliminarCiudades(NodoListaCiudad nodo)
+    {
+        if (nodo.getSiguiente()!= null)
+        {
+            eliminarCiudades(nodo.getSiguiente());
+        }
+        nodo=null;
+    }
 }

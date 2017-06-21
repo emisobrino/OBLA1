@@ -161,6 +161,12 @@ public class ListaAmbulancia {
         System.out.println("Total Ambulancias disponibles: " + cantidadAmbulanciasEnCiudad);
     }
 
+    public void vaciarLista() 
+    {
+       this.setInicio(null);
+       this.cantActual = 0;
+    }
+    
     public boolean eliminarAmbulancia(String ambulanciaID) 
     {
         //Creo nodo que voy a usar para recorrer
@@ -210,5 +216,14 @@ public class ListaAmbulancia {
         System.gc();
         //Devuelvo verdadero si se ejecuta correctamente la funcion
         return true;
+    }
+    
+    public void eliminarAmbulancias(NodoListaAmbulancia nodo)
+    {
+        if (nodo.getSiguiente()!= null)
+        {
+            eliminarAmbulancias(nodo.getSiguiente());
+        }
+        nodo=null;
     }
 }

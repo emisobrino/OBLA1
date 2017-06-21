@@ -113,22 +113,11 @@ public class ListaChofer {
         }
     }
 
-    //Eliminar chofer
-//    public void eliminarChofer(String cedula) {
-//        NodoListaChofer aux = inicio;
-//        NodoListaChofer nodoAnteriorAChoferEliminar;
-//        NodoListaChofer nodoSiguienteAChoferEliminar;
-//
-//        while (aux != null) {
-//            if (aux.getDato().getCedula() == cedula) {
-//                nodoSiguienteAChoferEliminar = aux.getSiguiente();
-//                aux.setSiguiente(null);
-//            }
-//
-//            aux = aux.getSiguiente();
-//        }
-//    }
-
+    public void vaciarLista() 
+    {
+       this.setInicio(null);
+    }
+    
     public boolean eliminarChofer(String cedula) 
     {
         //Creo nodo que voy a usar para recorrer
@@ -179,4 +168,36 @@ public class ListaChofer {
         //Devuelvo verdadero si se ejecuta correctamente la funcion
         return true;
     }
+    
+//    public boolean eliminarChoferes() 
+//    {
+//        Si el nodo esta vacio entonces devuelvo false por que la lista esta vacia
+//        if (inicio == null) return false;
+//         
+//        while(true)
+//        {
+//            Creo nodo que voy a usar para recorrer
+//            NodoListaChofer nodoAnterior = inicio;
+//        
+//            nodoAnterior.setSiguiente(null);
+//            
+//            if(nodoAnterior.getSiguiente() == null)
+//            {
+//                nodoAnterior = null;
+//                return true;
+//            }
+//        }
+//    }
+    
+    public void eliminarChoferes(NodoListaChofer nodo)
+    {
+        if (nodo.getSiguiente()!= null)
+        {
+            eliminarChoferes(nodo.getSiguiente());
+        }
+        nodo=null;
+    }
+
+
+
 }

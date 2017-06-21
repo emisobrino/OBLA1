@@ -65,13 +65,16 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet destruirSistemaEmergencias() {
-        //Pongo todo en null, entonces luego el sistema con el recolector de basura se encarga de destruir 
-        this.listaAmbulancias = null;
-        this.listaCiudades = null;
+    public TipoRet destruirSistemaEmergencias() 
+    {
+        //LLamo al metodo eliminar de cada lista pasandole el nodo de inicio como punto de partida
+        //Listas del sistema
+        this.listaChoferes.eliminarChoferes(listaChoferes.getInicio());
+        this.listaCiudades.eliminarCiudades(listaCiudades.getInicio());
+        this.listaAmbulancias.eliminarAmbulancias(listaAmbulancias.getInicio());
+        
         this.mapa = null;
-        this.listaChoferes = null;
-
+        
         //Recolector de Basura (Garbage Collection) 
         System.gc();
 
@@ -483,11 +486,12 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet ciudadesEnRadio(int ciudadID, int duracionViaje) {
-       
-        if (this.listaCiudades.buscar(ciudadID)!=null) {
-            if (duracionViaje>0) {
-                
+    public TipoRet ciudadesEnRadio(int ciudadID, int duracionViaje) 
+    {
+        if (this.listaCiudades.buscar(ciudadID)!=null) 
+        {
+            if (duracionViaje>0)
+            {
                 System.out.println("Ciudades en radio de <"+duracionViaje+"> minutos a la ciudad: "+ciudadID+": ");
 
                 for (int i = 0; i < mapa.length; i++) {
@@ -497,21 +501,15 @@ public class SistemaAmbulancia implements ISistema {
                         System.out.println(" No hay rutas directas");
                     }
                 }
+                return TipoRet.OK;
             }else{
                 System.out.println("La duración del viaje debe ser mayor que 0.");
                 return TipoRet.ERROR;
             }
-            
-            
         }else{
-        
             System.out.println("La ciudad "+ciudadID+" no existe.");
             return TipoRet.ERROR;
-            
         }
-        
-        
-        return TipoRet.NO_IMPLEMENTADA;
     }
 
     @Override
