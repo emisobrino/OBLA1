@@ -38,21 +38,26 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet eliminarAmbulancia(String ambulanciaID) {
-        //Busco ambulancia
+        //Busco ambulancia y guardo ciudad en la que se encuentra
         Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
-
+        Ciudad ciudadAmbulancia = ambu.getCiudad();
+        
         //Si no esta vacia entonces encontro la ambulancia
         if (ambu != null) {
             //Si no esta en estado de emergencia entonces borro la ambulancia
             if (ambu.getEstado() != Ambulancia.TipoEstado.ATENDIENDO_EMERGENCIA) {
+                //Elimino la ambulancia de la lista ambulancia en la ciudad que estaba
+                ciudadAmbulancia.getAmbulancias().eliminarAmbulancia(ambulanciaID);
+                
+                //Elimino ambulancia del sistema
                 listaAmbulancias.eliminarAmbulancia(ambulanciaID);
                 return TipoRet.OK;
             } else {
-                System.out.println("No es posible eliminar la ambulancia ambulanciaID");
+                System.out.println("No es posible eliminar la ambulancia" + ambulanciaID);
                 return TipoRet.ERROR;
             }
         } else {
-            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            System.out.println("No existe una ambulancia con identificador" + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
@@ -84,11 +89,11 @@ public class SistemaAmbulancia implements ISistema {
                 ciu.getAmbulancias().insertarOrdenado(ambu);
                 return TipoRet.OK;
             } else {
-                System.out.println("La ciudad  ciudadID no existe.");
+                System.out.println("La ciudad" + ciudadID + "no existe.");
                 return TipoRet.ERROR;
             }
         } else {
-            System.out.println("Ya existe una ambulancia con identificador ambulanciaID");
+            System.out.println("Ya existe una ambulancia con identificador" + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
@@ -107,15 +112,15 @@ public class SistemaAmbulancia implements ISistema {
                     ambu.setEstado(Ambulancia.TipoEstado.NO_DISPONIBLE);
                     return TipoRet.OK;
                 } else {
-                    System.out.println("La ambulancia ambulanciaID ya está en estado NO_DISPONIBLE.");
+                    System.out.println("La ambulancia" + ambulanciaID + "ya está en estado NO_DISPONIBLE.");
                     return TipoRet.ERROR;
                 }
             } else {
-                System.out.println("No es posible deshabilitar la ambulancia ambulanciaID.");
+                System.out.println("No es posible deshabilitar la ambulancia" + ambulanciaID);
                 return TipoRet.ERROR;
             }
         } else {
-            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            System.out.println("No existe una ambulancia con identificador" + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
@@ -132,11 +137,11 @@ public class SistemaAmbulancia implements ISistema {
                 ambu.setEstado(Ambulancia.TipoEstado.DISPONIBLE);
                 return TipoRet.OK;
             } else {
-                System.out.println("La ambulancia ambulanciaID ya está habilitada.");
+                System.out.println("La ambulancia" + ambulanciaID + "ya está habilitada.");
                 return TipoRet.ERROR;
             }
         } else {
-            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            System.out.println("No existe una ambulancia con identificador" + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
@@ -152,7 +157,7 @@ public class SistemaAmbulancia implements ISistema {
             System.out.println(ambu.toString());
             return TipoRet.OK;
         } else {
-            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            System.out.println("No existe una ambulancia con identificador" + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
@@ -181,7 +186,7 @@ public class SistemaAmbulancia implements ISistema {
             listaAmbulancias.mostrarAmbulanciasPorCiudad(ciudadID);
             return TipoRet.OK;
         } else {
-            System.out.println("La ciudadID no existe.");
+            System.out.println("La" + ciudadID + "no existe.");
             return TipoRet.ERROR;
         }
     }
@@ -201,11 +206,11 @@ public class SistemaAmbulancia implements ISistema {
                 ciuVieja.getAmbulancias().eliminarAmbulancia(ambulanciaID);   //A LA CIUDAD VIEJA LE QUITO LA AMBULANCIA
                 return TipoRet.OK;
             } else {
-                System.out.println("La ciudad ciudadID no existe");
+                System.out.println("La ciudad" +  ciudadID + "no existe");
                 return TipoRet.ERROR;
             }
         } else {
-            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            System.out.println("No existe una ambulancia con identificador" + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
@@ -384,17 +389,24 @@ public class SistemaAmbulancia implements ISistema {
         Ciudad ciuOrigen = listaCiudades.buscar(ciudadOrigen);
         Ciudad ciuDestino = listaCiudades.buscar(ciudadDestino);
 
-        if (ciuOrigen != null) {
-            if (ciuDestino != null) {
-                int camino = 0;
+        if (ciuOrigen != null) 
+        {
+            if (ciuDestino != null) 
+            {
                 int columnas = mapa[0].length;
                 int columna = 0;
                 int suma;
                 int minimo = Integer.MAX_VALUE;
 
-                for (int i = 0; i < columnas; i++) {
-                    if (mapa[ciudadOrigen][i] != 0 && mapa[ciudadDestino][i] != 0) {
+                //Si hay ruta directa lo establesco como el minimo
+                if(mapa[ciudadOrigen][ciudadDestino] != -1) minimo = mapa[ciudadOrigen][ciudadDestino];
+                
+                for (int i = 0; i < columnas; i++) 
+                {
+                    if (mapa[ciudadOrigen][i] != 0 && mapa[ciudadDestino][i] != 0) 
+                    {
                         suma = mapa[ciudadOrigen][i] + mapa[ciudadDestino][i];
+                        
                         if (suma < minimo) {
                             minimo = suma;
                             columna = i;
@@ -402,16 +414,20 @@ public class SistemaAmbulancia implements ISistema {
                     }
                 }
                 
-                System.out.println("ciudad origen : " + ciudadOrigen 
-                    +  "Escala : " + columna + "  destino :" + ciudadDestino + "  duracion :" + minimo
+                System.out.println("Ruta más rápida:");
+                System.out.println(ciuOrigen.getNombreCiudad() + "> - <" + 0);
+                System.out.println(listaCiudades.buscar(columna).getNombreCiudad() + "> - <" +  mapa[ciudadOrigen][columna]);
+                System.out.println(ciuDestino.getNombreCiudad() + "> - <" + mapa[columna][ciudadDestino] 
+                    + "\nDemora total de ambulancias:" + minimo
                 );
+
                 return TipoRet.OK;
             } else {
-                System.out.println("La ciudad ciudadDestino no existe");
+                System.out.println("La ciudad" + ciudadDestino + "no existe");
                 return TipoRet.ERROR;
             }
         } else {
-            System.out.println("La ciudad ciudadOrigen no existe");
+            System.out.println("La ciudad" + ciudadOrigen + "no existe");
             return TipoRet.ERROR;
         }
     }
@@ -448,7 +464,7 @@ public class SistemaAmbulancia implements ISistema {
                 return TipoRet.ERROR;
             }
         } else {
-            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            System.out.println("No existe una ambulancia con identificador" + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
@@ -471,7 +487,7 @@ public class SistemaAmbulancia implements ISistema {
                 return TipoRet.ERROR;
             }
         } else {
-            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            System.out.println("No existe una ambulancia con identificador" + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
@@ -489,7 +505,7 @@ public class SistemaAmbulancia implements ISistema {
             ambu.getChoferes().mostrarChoferes();
             return TipoRet.OK;
         } else {
-            System.out.println("No existe una ambulancia con identificador ambulanciaID");
+            System.out.println("No existe una ambulancia con identificador" + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
