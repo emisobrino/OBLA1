@@ -1,8 +1,10 @@
 package sistemaambulancia;
 
 import TADAmbulancia.ListaAmbulancia;
+import TADAmbulancia.NodoListaAmbulancia;
 import TADChofer.ListaChofer;
 import TADCiudad.ListaCiudad;
+import TADCiudad.NodoListaCiudad;
 import sistemaambulancia.dominio.Ambulancia;
 import sistemaambulancia.dominio.Chofer;
 import sistemaambulancia.dominio.Ciudad;
@@ -433,14 +435,55 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet informeCiudades() {
+    public TipoRet informeCiudades() 
+    {
+        //Precondicion: ya hay ciudades
+        //Obtengo primer nodo de la lista ciudad para recorrer la lista
+        NodoListaCiudad auxCiu = listaCiudades.getInicio();
         
-        return TipoRet.NO_IMPLEMENTADA;
+        //Mientras que el nodo de la lista ciudad no sea vacio
+        while (auxCiu != null)
+        {
+            //Contador de ambulancias por ciudad 
+            int cantAmbuDisponibles = 0; 
+            int cantAmbuNoDisponibles = 0;
+            
+            System.out.println("Informe Ciudad: <" + auxCiu.getDato().getId() + ">");
+            
+            //Recorro matriz para ver las rutas directas segun la ciudadID
+            for (int i = 0; i < mapa.length; i++) 
+            {
+                System.out.println("\n \tRuta directa a <" + i + ">, minutos<" 
+                    + mapa[auxCiu.getDato().getId()][i] + ">"
+                );
+                
+                //Obtengo primer nodo de la lista ambulancias en esa ciudad
+                NodoListaAmbulancia auxAmbu = auxCiu.getDato().getAmbulancias().getInicio();
+                
+                //Mientras que el nodo no sea vacio 
+                while(auxAmbu != null)
+                {
+                    //Si la ambulancia esta en estado disponible o no disponible entonces sumo al contador
+                    if(auxAmbu.getDato().getEstado() == Ambulancia.TipoEstado.DISPONIBLE) cantAmbuDisponibles++;
+                    
+                    if(auxAmbu.getDato().getEstado() == Ambulancia.TipoEstado.NO_DISPONIBLE) cantAmbuNoDisponibles++;
+                    
+                    //Seteo al nodo el valor siguiente, para seguir recorriendo ambulancias
+                    auxAmbu = auxAmbu.getSiguiente();
+                }
+                
+                System.out.println("Ambulancias disponibles: <" + cantAmbuDisponibles + ">");
+                System.out.println("Ambulancias no disponibles: <" + cantAmbuNoDisponibles + ">");
+            }
+            //Seteo al nodo el valor siguiente, para seguir recorriendo ciudades
+            auxCiu = auxCiu.getSiguiente();
+        }
+        
+        return TipoRet.OK;
     }
 
     @Override
     public TipoRet ciudadesEnRadio(int ciudadID, int duracionViaje) {
-        
         
         
         return TipoRet.NO_IMPLEMENTADA;
