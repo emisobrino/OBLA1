@@ -310,16 +310,77 @@ public class SistemaAmbulancia implements ISistema {
         }
     }
 
-    @Override
+     @Override
     public TipoRet ambulanciaMasCercana(int ciudadID) {
-
-        if (this.listaCiudades.buscar(ciudadID) != null) {
-            //terminar
-        } else {
-            System.out.println("La ciudad " + ciudadID + " no existe.");
+        
+        if(listaCiudades.buscar(ciudadID)!=null){
+            
+        Ciudad ciudad = listaCiudades.buscar(ciudadID);
+            // Si existe la ciudad y tiene ambulancias dentro de ella.
+            if(!ciudad.getAmbulancias().esVacia()){
+                ListaAmbulancia lista = ciudad.getAmbulancias();
+                System.out.println("Ambulancia más cercana a: "+ ciudadID 
+                            +" - "+ ciudad.getNombreCiudad());
+                while(!lista.esVacia()){
+                    Ambulancia a = lista.head();
+                    if (a.getEstado()==Ambulancia.TipoEstado.DISPONIBLE) {
+                        
+                    System.out.println("Ambulancia: " + a.getId());
+                    System.out.println("Demora del viaje: 0");
+                    
+                    }else{
+                        System.out.println("no hay ambulancia disponibles");
+                        lista = lista.tail();
+                    }
+                }
+                return TipoRet.OK;
+            }
+            
+            // Si existe la ciudad pero no tiene ambulancias, se buscara la ciudad mas cercana con ambulancias 
+            
+            else{
+                int minimo=Integer.MAX_VALUE;
+                int ciudadMasCercana=-1;
+                for(int i = 0; i < mapa[0].length; i++){
+                    if(mapa[ciudadID][i] != 0 && mapa[ciudadID][i] != -1){
+                        // Si existe una ciudad con el ID = i y si esa ciudad tiene ambulancias, se guarda como la ciudad
+                        // mas cercana con ambulancias.
+                        if(listaCiudades.buscar(i)!=null && !listaCiudades.buscar(i).getAmbulancias().esVacia()){
+                            if(mapa[ciudadID][i] < minimo){
+                                minimo = mapa[ciudadID][i];
+                                ciudadMasCercana = i;
+                            }
+                        }
+                    }
+                }
+                
+                // Si existe una ciudad cercana con ambulancias.
+                if(ciudadMasCercana != -1){
+                    System.out.println("Ambulancia más cercana a: "+ ciudadID 
+                            +" - "+ ciudad.getNombreCiudad());
+                    Ciudad ciudadCercana = listaCiudades.buscar(ciudadMasCercana);
+                    ListaAmbulancia auxList = ciudadCercana.getAmbulancias();
+                    while(!auxList.esVacia()){
+                        Ambulancia a = auxList.getInicio().getDato();
+                        System.out.println("Ambulancia: " + a.getId());
+                        System.out.println("Demora del viaje: " + mapa[ciudadID][ciudadMasCercana]);
+                        auxList = auxList.tail();
+                    }
+                    return TipoRet.OK;
+                }
+                // Si no existe una ciudad cercana con ambulancias.
+                else{
+                    System.out.println("Ambulancia más cercana a: "+ ciudadID 
+                            +" - "+ ciudad.getNombreCiudad());
+                    System.out.println("No hay ambulancias creadas.");
+                    return TipoRet.OK;
+                }
+            }
         }
-
-        return TipoRet.NO_IMPLEMENTADA;
+        else{
+            System.out.println("La ciudad "+ ciudadID +" no existe.");
+            return TipoRet.ERROR;
+        }
     }
 
     @Override
@@ -335,7 +396,7 @@ public class SistemaAmbulancia implements ISistema {
                 int columnas = mapa[0].length;
                 int columna = 0;
                 int suma;
-                int minimo = 9999;
+                int minimo = Integer.MAX_VALUE;
 
                 //Si hay ruta directa lo establesco como el minimo
                 if(mapa[ciudadOrigen][ciudadDestino] != -1) minimo = mapa[ciudadOrigen][ciudadDestino];
@@ -379,6 +440,9 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet ciudadesEnRadio(int ciudadID, int duracionViaje) {
+        
+        
+        
         return TipoRet.NO_IMPLEMENTADA;
     }
 

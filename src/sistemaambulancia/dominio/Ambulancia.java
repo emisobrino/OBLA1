@@ -65,6 +65,6 @@ public class Ambulancia {
     public String toString()
     {
         return String.format("Datos ambulancia: {0}\n Estado: {1}\n Ciudad: {2}\n #Emergencias: {3}", 
-            this.id, this.estado, this.ciudad.nombreCiudad, this.cantidadViajes);
+            this.id, this.estado, this.ciudad.getNombreCiudad(), this.cantidadViajes);
     }
 }

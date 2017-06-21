@@ -5,7 +5,7 @@ import TADAmbulancia.ListaAmbulancia;
 public class Ciudad {
     
     private static Integer id=-1;
-    public String nombreCiudad;
+    private String nombreCiudad;
     private ListaAmbulancia ambulancias;
 
     public Ciudad(String nombreCiudad) {
