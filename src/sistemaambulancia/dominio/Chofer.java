@@ -1,7 +1,7 @@
 package sistemaambulancia.dominio;
 
-public class Chofer 
-{
+public class Chofer {
+
     //Properties
     private String cedula;
     private String nombre;
@@ -11,7 +11,7 @@ public class Chofer
     public Chofer(String cedula, String nombre, String idAmbulancia) {
         this.cedula = cedula;
         this.nombre = nombre;
-        this.idAmbulancia= idAmbulancia;
+        this.idAmbulancia = idAmbulancia;
     }
 
     //Obtener cedula
@@ -33,14 +33,18 @@ public class Chofer
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     //Obtener id ambulancia en la que trabaja
-    public String getIdAmbulancia(){
+    public String getIdAmbulancia() {
         return idAmbulancia;
     }
-    
+
     //Setear id ambulancia a la que trabaja
-    public void setIdAmbulancia(String idAmbulancia){
-        this.idAmbulancia=idAmbulancia;
+    public void setIdAmbulancia(String idAmbulancia) {
+        this.idAmbulancia = idAmbulancia;
+    }
+
+    public void eliminar() {
+        //no hay nada para borrar
     }
 }

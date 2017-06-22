@@ -22,7 +22,7 @@ public class SistemaAmbulancia implements ISistema {
         listaCiudades = new ListaCiudad(cantidadCiudades);
         listaAmbulancias = new ListaAmbulancia();
         listaChoferes = new ListaChofer();
-        
+
         if (cantidadCiudades <= 0) {
             System.out.println("La cantidad de ciudades es inferior a 1.");
             return TipoRet.ERROR;
@@ -45,15 +45,17 @@ public class SistemaAmbulancia implements ISistema {
     public TipoRet eliminarAmbulancia(String ambulanciaID) {
         //Busco ambulancia y guardo ciudad en la que se encuentra
         Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
-        Ciudad ciudadAmbulancia = ambu.getCiudad();
-        
+
         //Si no esta vacia entonces encontro la ambulancia
         if (ambu != null) {
+            //Guardo ciudad donde esta la ambulancia
+            Ciudad ciudadAmbulancia = ambu.getCiudad();
+
             //Si no esta en estado de emergencia entonces borro la ambulancia
             if (ambu.getEstado() != Ambulancia.TipoEstado.ATENDIENDO_EMERGENCIA) {
                 //Elimino la ambulancia de la lista ambulancia en la ciudad que estaba
                 ciudadAmbulancia.getAmbulancias().eliminarAmbulancia(ambulanciaID);
-                
+
                 //Elimino ambulancia del sistema
                 listaAmbulancias.eliminarAmbulancia(ambulanciaID);
                 return TipoRet.OK;
@@ -68,18 +70,19 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet destruirSistemaEmergencias() 
-    {
+    public TipoRet destruirSistemaEmergencias() {
         //LLamo al metodo eliminar de cada lista pasandole el nodo de inicio como punto de partida
         //Listas del sistema
-        this.listaChoferes.eliminarChoferes(listaChoferes.getInicio());
-        this.listaCiudades.eliminarCiudades(listaCiudades.getInicio());
-        this.listaAmbulancias.eliminarAmbulancias(listaAmbulancias.getInicio());
-        
+        this.listaCiudades.eliminarCiudades();
+        this.listaCiudades = null;
+
+        this.listaAmbulancias.eliminarAmbulancias();
+        this.listaAmbulancias = null;
+
+        this.listaChoferes.eliminarChoferes();
+        this.listaChoferes = null;
+
         this.mapa = null;
-        
-        //Recolector de Basura (Garbage Collection) 
-        System.gc();
 
         return TipoRet.OK;
     }
@@ -204,21 +207,22 @@ public class SistemaAmbulancia implements ISistema {
         //Busco ambulancia y ciudad
         Ambulancia ambu = listaAmbulancias.buscar(ambulanciaID);
         Ciudad ciuNueva = listaCiudades.buscar(ciudadID);
-        //Guardo el valor de la ciudad de donde parte la ambulancia
-        Ciudad ciuVieja = ambu.getCiudad();
 
         if (ambu != null) {
             if (ciuNueva != null) {
+                //Guardo el valor de la ciudad de donde parte la ambulancia
+                Ciudad ciuVieja = ambu.getCiudad();
+
                 ambu.setCiudad(ciuNueva);   //SETEO CIUDAD DE DESTINO
                 ciuNueva.getAmbulancias().insertarOrdenado(ambu);  //A LA CIUDAD DE DESTINO LE AGREGO LA AMBULANCIA
                 ciuVieja.getAmbulancias().eliminarAmbulancia(ambulanciaID);   //A LA CIUDAD VIEJA LE QUITO LA AMBULANCIA
                 return TipoRet.OK;
             } else {
-                System.out.println("La ciudad" +  ciudadID + "no existe");
+                System.out.println("La ciudad" + ciudadID + "no existe");
                 return TipoRet.ERROR;
             }
         } else {
-            System.out.println("No existe una ambulancia con identificador" + ambulanciaID);
+            System.out.println("No existe una ambulancia con identificador: " + ambulanciaID);
             return TipoRet.ERROR;
         }
     }
@@ -318,75 +322,71 @@ public class SistemaAmbulancia implements ISistema {
         }
     }
 
-     @Override
+    @Override
     public TipoRet ambulanciaMasCercana(int ciudadID) {
-        
-        if(listaCiudades.buscar(ciudadID)!=null){
-            
-        Ciudad ciudad = listaCiudades.buscar(ciudadID);
+
+        if (listaCiudades.buscar(ciudadID) != null) {
+
+            Ciudad ciudad = listaCiudades.buscar(ciudadID);
             // Si existe la ciudad y tiene ambulancias dentro de ella.
-            if(!ciudad.getAmbulancias().esVacia()){
+            if (!ciudad.getAmbulancias().esVacia()) {
                 ListaAmbulancia lista = ciudad.getAmbulancias();
-                System.out.println("Ambulancia más cercana a: "+ ciudadID 
-                            +" - "+ ciudad.getNombreCiudad());
-                while(!lista.esVacia()){
+                System.out.println("Ambulancia más cercana a: " + ciudadID
+                        + " - " + ciudad.getNombreCiudad());
+                while (!lista.esVacia()) {
                     Ambulancia a = lista.head();
-                    if (a.getEstado()==Ambulancia.TipoEstado.DISPONIBLE) {
-                        
-                    System.out.println("Ambulancia: " + a.getId());
-                    System.out.println("Demora del viaje: 0");
-                    
-                    }else{
+                    if (a.getEstado() == Ambulancia.TipoEstado.DISPONIBLE) {
+
+                        System.out.println("Ambulancia: " + a.getId());
+                        System.out.println("Demora del viaje: 0");
+
+                    } else {
                         System.out.println("no hay ambulancia disponibles");
-                        lista = lista.tail();
+
                     }
+                    lista = lista.tail();
                 }
                 return TipoRet.OK;
-            }
-            
-            // Si existe la ciudad pero no tiene ambulancias, se buscara la ciudad mas cercana con ambulancias 
-            
-            else{
-                int minimo=Integer.MAX_VALUE;
-                int ciudadMasCercana=-1;
-                for(int i = 0; i < mapa[0].length; i++){
-                    if(mapa[ciudadID][i] != 0 && mapa[ciudadID][i] != -1){
+            } // Si existe la ciudad pero no tiene ambulancias, se buscara la ciudad mas cercana con ambulancias 
+            else {
+                int minimo = Integer.MAX_VALUE;
+                int ciudadMasCercana = -1;
+                for (int i = 0; i < mapa[0].length; i++) {
+                    if (mapa[ciudadID][i] != 0 && mapa[ciudadID][i] != -1) {
                         // Si existe una ciudad con el ID = i y si esa ciudad tiene ambulancias, se guarda como la ciudad
                         // mas cercana con ambulancias.
-                        if(listaCiudades.buscar(i)!=null && !listaCiudades.buscar(i).getAmbulancias().esVacia()){
-                            if(mapa[ciudadID][i] < minimo){
+                        if (listaCiudades.buscar(i) != null && !listaCiudades.buscar(i).getAmbulancias().esVacia()) {
+                            if (mapa[ciudadID][i] < minimo) {
                                 minimo = mapa[ciudadID][i];
                                 ciudadMasCercana = i;
                             }
                         }
                     }
                 }
-                
+
                 // Si existe una ciudad cercana con ambulancias.
-                if(ciudadMasCercana != -1){
-                    System.out.println("Ambulancia más cercana a: "+ ciudadID 
-                            +" - "+ ciudad.getNombreCiudad());
+                if (ciudadMasCercana != -1) {
+                    System.out.println("Ambulancia más cercana a: " + ciudadID
+                            + " - " + ciudad.getNombreCiudad());
                     Ciudad ciudadCercana = listaCiudades.buscar(ciudadMasCercana);
                     ListaAmbulancia auxList = ciudadCercana.getAmbulancias();
-                    while(!auxList.esVacia()){
+                    while (!auxList.esVacia()) {
                         Ambulancia a = auxList.getInicio().getDato();
                         System.out.println("Ambulancia: " + a.getId());
                         System.out.println("Demora del viaje: " + mapa[ciudadID][ciudadMasCercana]);
                         auxList = auxList.tail();
                     }
                     return TipoRet.OK;
-                }
-                // Si no existe una ciudad cercana con ambulancias.
-                else{
-                    System.out.println("Ambulancia más cercana a: "+ ciudadID 
-                            +" - "+ ciudad.getNombreCiudad());
+                } // Si no existe una ciudad cercana con ambulancias.
+                else {
+                    System.out.println("Ambulancia más cercana a: " + ciudadID
+                            + " - " + ciudad.getNombreCiudad());
                     System.out.println("No hay ambulancias creadas.");
-                    return TipoRet.OK;
+                    return TipoRet.ERROR;
                 }
             }
-        }
-        else{
-            System.out.println("La ciudad "+ ciudadID +" no existe.");
+        } else {
+            System.out.println("La ciudad " + ciudadID + " no existe.");
             return TipoRet.ERROR;
         }
     }
@@ -397,36 +397,35 @@ public class SistemaAmbulancia implements ISistema {
         Ciudad ciuOrigen = listaCiudades.buscar(ciudadOrigen);
         Ciudad ciuDestino = listaCiudades.buscar(ciudadDestino);
 
-        if (ciuOrigen != null) 
-        {
-            if (ciuDestino != null) 
-            {
+        if (ciuOrigen != null) {
+            if (ciuDestino != null) {
                 int columnas = mapa[0].length;
                 int columna = 0;
                 int suma;
                 int minimo = Integer.MAX_VALUE;
 
                 //Si hay ruta directa lo establesco como el minimo
-                if(mapa[ciudadOrigen][ciudadDestino] != -1) minimo = mapa[ciudadOrigen][ciudadDestino];
-                
-                for (int i = 0; i < columnas; i++) 
-                {
-                    if (mapa[ciudadOrigen][i] != 0 && mapa[ciudadDestino][i] != 0) 
-                    {
+                if (mapa[ciudadOrigen][ciudadDestino] != -1) {
+                    minimo = mapa[ciudadOrigen][ciudadDestino];
+                }
+
+                for (int i = 0; i < columnas; i++) {
+                    if (mapa[ciudadOrigen][i] != 0 && mapa[ciudadOrigen][i] != -1
+                            && mapa[ciudadDestino][i] != 0 && mapa[ciudadDestino][i] != -1) {
                         suma = mapa[ciudadOrigen][i] + mapa[ciudadDestino][i];
-                        
+
                         if (suma < minimo) {
                             minimo = suma;
                             columna = i;
                         }
                     }
                 }
-                
+
                 System.out.println("Ruta más rápida:");
                 System.out.println(ciuOrigen.getNombreCiudad() + "> - <" + 0);
-                System.out.println(listaCiudades.buscar(columna).getNombreCiudad() + "> - <" +  mapa[ciudadOrigen][columna]);
-                System.out.println(ciuDestino.getNombreCiudad() + "> - <" + mapa[columna][ciudadDestino] 
-                    + "\nDemora total de ambulancias:" + minimo
+                System.out.println(listaCiudades.buscar(columna).getNombreCiudad() + "> - <" + mapa[ciudadOrigen][columna]);
+                System.out.println(ciuDestino.getNombreCiudad() + "> - <" + mapa[columna][ciudadDestino]
+                        + "\nDemora total de ambulancias:" + minimo
                 );
 
                 return TipoRet.OK;
@@ -441,76 +440,71 @@ public class SistemaAmbulancia implements ISistema {
     }
 
     @Override
-    public TipoRet informeCiudades() 
-    {
+    public TipoRet informeCiudades() {
         //Precondicion: ya hay ciudades
         //Obtengo primer nodo de la lista ciudad para recorrer la lista
         NodoListaCiudad auxCiu = listaCiudades.getInicio();
-        
+
         //Mientras que el nodo de la lista ciudad no sea vacio
-        while (auxCiu != null)
-        {
+        while (auxCiu != null) {
             //Contador de ambulancias por ciudad 
-            int cantAmbuDisponibles = 0; 
+            int cantAmbuDisponibles = 0;
             int cantAmbuNoDisponibles = 0;
-            
+
             System.out.println("Informe Ciudad: <" + auxCiu.getDato().getId() + ">");
-            
+
             //Recorro matriz para ver las rutas directas segun la ciudadID
-            for (int i = 0; i < mapa.length; i++) 
-            {
-                System.out.println("\n \tRuta directa a <" + i + ">, minutos<" 
-                    + mapa[auxCiu.getDato().getId()][i] + ">"
+            for (int i = 0; i < mapa.length; i++) {
+                System.out.println("\n \tRuta directa a <" + i + ">, minutos<"
+                        + mapa[auxCiu.getDato().getId()][i] + ">"
                 );
-                
+
                 //Obtengo primer nodo de la lista ambulancias en esa ciudad
                 NodoListaAmbulancia auxAmbu = auxCiu.getDato().getAmbulancias().getInicio();
-                
+
                 //Mientras que el nodo no sea vacio 
-                while(auxAmbu != null)
-                {
+                while (auxAmbu != null) {
                     //Si la ambulancia esta en estado disponible o no disponible entonces sumo al contador
-                    if(auxAmbu.getDato().getEstado() == Ambulancia.TipoEstado.DISPONIBLE) cantAmbuDisponibles++;
-                    
-                    if(auxAmbu.getDato().getEstado() == Ambulancia.TipoEstado.NO_DISPONIBLE) cantAmbuNoDisponibles++;
-                    
+                    if (auxAmbu.getDato().getEstado() == Ambulancia.TipoEstado.DISPONIBLE) {
+                        cantAmbuDisponibles++;
+                    }
+
+                    if (auxAmbu.getDato().getEstado() == Ambulancia.TipoEstado.NO_DISPONIBLE) {
+                        cantAmbuNoDisponibles++;
+                    }
+
                     //Seteo al nodo el valor siguiente, para seguir recorriendo ambulancias
                     auxAmbu = auxAmbu.getSiguiente();
                 }
-                
+
                 System.out.println("Ambulancias disponibles: <" + cantAmbuDisponibles + ">");
                 System.out.println("Ambulancias no disponibles: <" + cantAmbuNoDisponibles + ">");
             }
             //Seteo al nodo el valor siguiente, para seguir recorriendo ciudades
             auxCiu = auxCiu.getSiguiente();
         }
-        
+
         return TipoRet.OK;
     }
 
     @Override
-    public TipoRet ciudadesEnRadio(int ciudadID, int duracionViaje) 
-    {
-        if (this.listaCiudades.buscar(ciudadID)!=null) 
-        {
-            if (duracionViaje>0)
-            {
-                System.out.println("Ciudades en radio de <"+duracionViaje+"> minutos a la ciudad: "+ciudadID+": ");
+    public TipoRet ciudadesEnRadio(int ciudadID, int duracionViaje) {
+        if (this.listaCiudades.buscar(ciudadID) != null) {
+            if (duracionViaje > 0) {
+                System.out.println("Ciudades en radio de <" + duracionViaje + "> minutos a la ciudad: " + ciudadID + ": ");
 
                 for (int i = 0; i < mapa.length; i++) {
-                    if (mapa[ciudadID][i]<duracionViaje && mapa[ciudadID][i]!=-1) {
-                        System.out.println( "\n \t Ciudad: "+i+" a "+ mapa[ciudadID][i]+" minutos");
-                    }else{
-                        System.out.println(" No hay rutas directas");
+                    if (mapa[ciudadID][i] < duracionViaje && mapa[ciudadID][i] != -1) {
+                        System.out.println("\n \t Ciudad: " + i + " a " + mapa[ciudadID][i] + " minutos");
                     }
                 }
                 return TipoRet.OK;
-            }else{
+            } else {
                 System.out.println("La duración del viaje debe ser mayor que 0.");
                 return TipoRet.ERROR;
             }
-        }else{
-            System.out.println("La ciudad "+ciudadID+" no existe.");
+        } else {
+            System.out.println("La ciudad " + ciudadID + " no existe.");
             return TipoRet.ERROR;
         }
     }
@@ -523,7 +517,7 @@ public class SistemaAmbulancia implements ISistema {
         //Si la ambulancia no esta vacia entonces encontro la ambulancia
         if (ambu != null) {
             //Si no existe ya un chofer con esa cedula 
-            if (!listaChoferes.contains(cedula)) {
+            if (!ambu.getChoferes().contains(cedula)) {
                 //Creo chofer y lo agrego a la lista
                 Chofer chofer = new Chofer(cedula, nombre, ambulanciaID);
                 listaChoferes.insertarOrdenado(chofer);

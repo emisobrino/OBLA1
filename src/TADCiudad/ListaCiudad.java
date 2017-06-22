@@ -124,26 +124,29 @@ public class ListaCiudad {
 
     public void mostrarCiudades() {
         //pre: se asume que la lista de ciudades no es vacia
-
         NodoListaCiudad aux = inicio;
         while (aux != null) {
             System.out.println(aux.getDato().toString());//mostramos el dato
             aux = aux.getSiguiente();
         }
     }
-    
-    public void vaciarLista() 
-    {
-       this.setInicio(null);
-       this.cantActual = 0;
+
+    public void vaciarLista() {
+        this.setInicio(null);
+        this.cantActual = 0;
     }
-    
-    public void eliminarCiudades(NodoListaCiudad nodo)
-    {
-        if (nodo.getSiguiente()!= null)
-        {
-            eliminarCiudades(nodo.getSiguiente());
+
+    private void eliminarCiudadRec(NodoListaCiudad nodo) {
+        if (nodo != null) {
+            nodo.eliminar();
+            eliminarCiudadRec(nodo.getSiguiente());
         }
-        nodo=null;
+        nodo = null;
+    }
+
+    public void eliminarCiudades() {
+        eliminarCiudadRec(inicio);
+        this.topeCiudades = 0;
+        this.cantActual = 0;
     }
 }

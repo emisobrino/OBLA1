@@ -3,7 +3,7 @@ package TADChofer;
 import sistemaambulancia.dominio.Chofer;
 
 public class NodoListaChofer {
-    
+
     private Chofer dato;
     private NodoListaChofer siguiente;
 
@@ -26,5 +26,12 @@ public class NodoListaChofer {
 
     public void setSiguiente(NodoListaChofer siguiente) {
         this.siguiente = siguiente;
+    }
+
+    void eliminar() {
+        if (dato != null) {
+            this.dato.eliminar();
+        }
+        dato = null;
     }
 }

@@ -44,9 +44,9 @@ public class Test
 
         //Se agregan rutas y se modifican demoras
 
-        p.ver(s.agregarRuta(0, 4, 46), ISistema.TipoRet.ERROR, "Se intenta agregar una ruta para la ciudad Origen 0.");
+        p.ver(s.agregarRuta(-1, 4, 46), ISistema.TipoRet.ERROR, "Se intenta agregar una ruta para la ciudad Origen -1.");
 
-        p.ver(s.agregarRuta(1, 0, 46), ISistema.TipoRet.ERROR, "Se intenta agregar una ruta para la ciudad Destino 0.");
+        p.ver(s.agregarRuta(1, -1, 46), ISistema.TipoRet.ERROR, "Se intenta agregar una ruta para la ciudad Destino -1.");
 
         p.ver(s.agregarRuta(1, 4, 0), ISistema.TipoRet.ERROR, "Se intenta agregar una ruta de duración 0 minutos.");
 
@@ -62,17 +62,17 @@ public class Test
 
         p.ver(s.agregarRuta(3, 4, 47), ISistema.TipoRet.OK, "Se agrega la ruta entre ciudades 3 y 4 con 47 minutos.");
 
-        p.ver(s.agregarRuta(3, 5, 108), ISistema.TipoRet.OK, "Se agrega la ruta entre ciudades 3 y 5 con 108 minutos.");
+        p.ver(s.agregarRuta(3, 4, 108), ISistema.TipoRet.OK, "Se agrega la ruta entre ciudades 3 y 4 con 108 minutos.");
 
-        p.ver(s.agregarRuta(4, 5, 151), ISistema.TipoRet.OK, "Se agrega la ruta entre ciudades 4 y 5 con 151 minutos.");
+        p.ver(s.agregarRuta(0, 4, 151), ISistema.TipoRet.OK, "Se agrega la ruta entre ciudades 0 y 4 con 151 minutos.");
 
         p.ver(s.rutaMasRapida(3, 2), ISistema.TipoRet.OK, "Se busca la ruta más rápida entre las ciudades 3 y 2.");
 
 
 
-        p.ver(s.agregarRuta(0, 4, 46), ISistema.TipoRet.ERROR, "Se intenta modificar una demora para la ciudad Origen 0.");
+        p.ver(s.agregarRuta(-1, 4, 46), ISistema.TipoRet.ERROR, "Se intenta modificar una demora para la ciudad Origen -1.");
 
-        p.ver(s.agregarRuta(1, 0, 40), ISistema.TipoRet.ERROR, "Se intenta modificar una demora para la ciudad Destino 0.");
+        p.ver(s.agregarRuta(1, -1, 40), ISistema.TipoRet.ERROR, "Se intenta modificar una demora para la ciudad Destino -1.");
 
         p.ver(s.agregarRuta(1, 4, 0), ISistema.TipoRet.ERROR, "Se intenta modificar una demora de duración 0 minutos.");
 
@@ -128,83 +128,82 @@ public class Test
 
 
 
-//        //Habilitar-deshabilirar ambulancias
-//
-//        p.ver(s.deshabilitarAmbulancia("SAS0001"), ISistema.TipoRet.OK, "Se deshabilita la ambulancia SAS0001.");
-//
-//        p.ver(s.informeAmbulancia(), ISistema.TipoRet.OK, "Se detallan todas las ambulancias del sistema.");
-//
-//
-//
-//        p.ver(s.deshabilitarAmbulancia("SAS0001"), ISistema.TipoRet.ERROR, "La ambulancia SAS0001 ya está deshabilitada.");
-//
-//        p.ver(s.deshabilitarAmbulancia("SAS3333"), ISistema.TipoRet.ERROR, "La ambulancia SAS3333 no existe, por lo tanto no se puede deshabilitar.");
-//
-//        p.ver(s.habilitarAmbulancia("SAS0001"), ISistema.TipoRet.OK, "Se habilita la ambulancia SAS0001.");
-//
-//        p.ver(s.informeAmbulancia(), ISistema.TipoRet.OK, "Se detallan todas las ambulancias del sistema.");
-//
-//
-//
-//        //Buscar ambulancia - informe
-//
-//        p.ver(s.buscarAmbulancia("SAS0001"), ISistema.TipoRet.OK, "Se encontró la ambulancia SAS0001. Detalles a continuación:");
-//
-//        p.ver(s.buscarAmbulancia("SAS3333"), ISistema.TipoRet.ERROR, "La ambulancia SAS3333 no existe.");
-//
-//
-//
-//        p.ver(s.informeAmbulancia(), ISistema.TipoRet.OK, "Se detallan todas las ambulancias del sistema.");
-//
-//        p.ver(s.deshabilitarAmbulancia("SAS0001"), ISistema.TipoRet.OK, "Se deshabilita la ambulancia SAS0001.");
-//
-//        p.ver(s.informeAmbulancia(1), ISistema.TipoRet.OK, "Se detallan todas las ambulancias disponibles para la ciudad 1.");
-//
-//        p.ver(s.informeAmbulancia(6), ISistema.TipoRet.ERROR, "La ciudad 6 no existe en el sistema, por lo tanto no se puede obtener información de sus ambulancias..");
-//
-//
-//
-//        //Eliminar ambulancia
-//
-//        p.ver(s.eliminarAmbulancia("SAS0002"), ISistema.TipoRet.OK, "Se elimina la ambulancia SAS0002.");
-//
-//        p.ver(s.eliminarAmbulancia("SAS3333"), ISistema.TipoRet.ERROR, "La ambulancia SAS3333 no existe, por lo tanto no se puede eliminar.");
-//
-//        p.ver(s.informeAmbulancia(1), ISistema.TipoRet.OK, "Se detallan todas las ambulancias disponibles del sistema para la ciudad 1.");
-//
-//
-//
-//        //Cambiar ubicación ambulancia
-//
-//        p.ver(s.cambiarUbicacion("B110004", 3), ISistema.TipoRet.OK, "Se modificó la ubicación de la ambulancia B110004 para la ciudad 3.");
-//
-//        p.ver(s.cambiarUbicacion("SAS3333", 3), ISistema.TipoRet.ERROR, "Esa ambulancia SAS3333 no existe, por lo tanto no se puede modificar su ubicación.");
-//
-//
-//
-//        p.ver(s.informeAmbulancia(), ISistema.TipoRet.OK, "Se detallan todas las ambulancias del sistema.");
-//
-//        p.ver(s.informeAmbulancia(2), ISistema.TipoRet.OK, "Se detallan todas las ambulancias disponibles del sistema para la ciudad 2.");
-//
-//        p.ver(s.informeAmbulancia(3), ISistema.TipoRet.OK, "Se detallan todas las ambulancias disponibles del sistema para la ciudad 3.");
-//
-//
-//
-//        p.ver(s.ambulanciaMasCercana(2), ISistema.TipoRet.OK, "Informa cuál es la ambulancia más cercana a la ciudad 2 y a cuántos minutos.");
-//
-//        p.ver(s.cambiarUbicacion("B110005", 3), ISistema.TipoRet.OK, "Se modificó la ubicación de la ambulancia B11005 para la ciudad 3.");
-//
-//        p.ver(s.ambulanciaMasCercana(2), ISistema.TipoRet.OK, "Informa cuál es la ambulancia más cercana y a cuánto.");
-//
-//
-//
-//        //Camino mas corto entre 2 ciudades distintas
-//
-//        p.ver(s.rutaMasRapida(2, 5), ISistema.TipoRet.OK, "Se busca la ruta más rápida entre las ciudades 2 y 5.");
-//
-//        p.ver(s.rutaMasRapida(5, 1), ISistema.TipoRet.OK, "Se busca la ruta más rápida entre las ciudades 5 y 1.");
-//
-//
+        //Habilitar-deshabilirar ambulancias
+
+        p.ver(s.deshabilitarAmbulancia("SAS0001"), ISistema.TipoRet.OK, "Se deshabilita la ambulancia SAS0001.");
+
+        p.ver(s.informeAmbulancia(), ISistema.TipoRet.OK, "Se detallan todas las ambulancias del sistema.");
+
+
+
+        p.ver(s.deshabilitarAmbulancia("SAS0001"), ISistema.TipoRet.ERROR, "La ambulancia SAS0001 ya está deshabilitada.");
+
+        p.ver(s.deshabilitarAmbulancia("SAS3333"), ISistema.TipoRet.ERROR, "La ambulancia SAS3333 no existe, por lo tanto no se puede deshabilitar.");
+
+        p.ver(s.habilitarAmbulancia("SAS0001"), ISistema.TipoRet.OK, "Se habilita la ambulancia SAS0001.");
+
+        p.ver(s.informeAmbulancia(), ISistema.TipoRet.OK, "Se detallan todas las ambulancias del sistema.");
+
+
+
+        //Buscar ambulancia - informe
+
+        p.ver(s.buscarAmbulancia("SAS0001"), ISistema.TipoRet.OK, "Se encontró la ambulancia SAS0001. Detalles a continuación:");
+
+        p.ver(s.buscarAmbulancia("SAS3333"), ISistema.TipoRet.ERROR, "La ambulancia SAS3333 no existe.");
+
+
+
+        p.ver(s.informeAmbulancia(), ISistema.TipoRet.OK, "Se detallan todas las ambulancias del sistema.");
+
+        p.ver(s.deshabilitarAmbulancia("SAS0001"), ISistema.TipoRet.OK, "Se deshabilita la ambulancia SAS0001.");
+
+        p.ver(s.informeAmbulancia(0), ISistema.TipoRet.OK, "Se detallan todas las ambulancias disponibles para la ciudad 1.");
+
+        p.ver(s.informeAmbulancia(6), ISistema.TipoRet.ERROR, "La ciudad 6 no existe en el sistema, por lo tanto no se puede obtener información de sus ambulancias..");
+
+
+
+        //Eliminar ambulancia
+
+        p.ver(s.eliminarAmbulancia("SAS0002"), ISistema.TipoRet.OK, "Se elimina la ambulancia SAS0002.");
+
+        p.ver(s.eliminarAmbulancia("SAS3333"), ISistema.TipoRet.ERROR, "La ambulancia SAS3333 no existe, por lo tanto no se puede eliminar.");
+
+        p.ver(s.informeAmbulancia(1), ISistema.TipoRet.OK, "Se detallan todas las ambulancias disponibles del sistema para la ciudad 1.");
+
+
+        //Cambiar ubicación ambulancia
+
+        p.ver(s.cambiarUbicacion("B110004", 3), ISistema.TipoRet.OK, "Se modificó la ubicación de la ambulancia B110004 para la ciudad 3.");
+
+        p.ver(s.cambiarUbicacion("SAS3333", 3), ISistema.TipoRet.ERROR, "Esa ambulancia SAS3333 no existe, por lo tanto no se puede modificar su ubicación.");
+
+
+
+        p.ver(s.informeAmbulancia(), ISistema.TipoRet.OK, "Se detallan todas las ambulancias del sistema.");
+
+        p.ver(s.informeAmbulancia(2), ISistema.TipoRet.OK, "Se detallan todas las ambulancias disponibles del sistema para la ciudad 2.");
+
+        p.ver(s.informeAmbulancia(3), ISistema.TipoRet.OK, "Se detallan todas las ambulancias disponibles del sistema para la ciudad 3.");
+
+
+
+        p.ver(s.ambulanciaMasCercana(2), ISistema.TipoRet.OK, "Informa cuál es la ambulancia más cercana a la ciudad 2 y a cuántos minutos.");
+
+        p.ver(s.cambiarUbicacion("B110005", 3), ISistema.TipoRet.OK, "Se modificó la ubicación de la ambulancia B11005 para la ciudad 3.");
+
+        p.ver(s.ambulanciaMasCercana(2), ISistema.TipoRet.OK, "Informa cuál es la ambulancia más cercana y a cuánto.");
+
+
+
+        //Camino mas corto entre 2 ciudades distintas
+
+        p.ver(s.rutaMasRapida(2, 4), ISistema.TipoRet.OK, "Se busca la ruta más rápida entre las ciudades 2 y 4.");
+
+//        p.ver(s.rutaMasRapida(4, 1), ISistema.TipoRet.OK, "Se busca la ruta más rápida entre las ciudades 4 y 1.");
+
+
 //
 //        //Ingreso de choferes
 //
@@ -268,19 +267,13 @@ public class Test
 //
 //        p.ver(s.destruirSistemaEmergencias(), ISistema.TipoRet.OK, "Sistema de emergencias destruido.");
 //
+//        //Chequeo de la destrucción correcta del sistema, creando uno nuevo y realizando búsquedas y solicitando información.
 //
+//        p.ver(s.crearSistemaDeEmergencias(3), ISistema.TipoRet.OK, "Se crea el sistema para 3 ciudades.");
 //
 //        p.ver(s.listarCiudades(), ISistema.TipoRet.OK, "Se notifica que no hay ciudades ingresadas en el mapa.");
 //
 //        p.ver(s.informeAmbulancia(), ISistema.TipoRet.OK, "No hay ambulancias para mostrar.");
-//
-//
-//
-//        //// Chequeo de la destrucción correcta del sistema, creando uno nuevo y realizando búsquedas y solicitando información.
-//
-//        p.ver(s.crearSistemaDeEmergencias(3), ISistema.TipoRet.OK, "Se crea el sistema para 3 ciudades.");
-//
-//
 //
 //        p.ver(s.listarCiudades(), ISistema.TipoRet.OK, "Se notifica que no hay ciudades ingresadas en el mapa.");
 //
@@ -306,10 +299,10 @@ public class Test
 //
 //        p.ver(s.agregarRuta(3, 4, 108), ISistema.TipoRet.ERROR, "La ciudad 4 no existe, por lo tanto no se puede agregar ruta.");
 //
-//        p.ver(s.agregarRuta(3, 1, 90), ISistema.TipoRet.OK, "Se agrega la ruta entre ciudades 3 y 1 con 90 minutos.");
+//        p.ver(s.agregarRuta(2, 1, 90), ISistema.TipoRet.OK, "Se agrega la ruta entre ciudades 3 y 1 con 90 minutos.");
 //
 //        p.ver(s.ciudadesEnRadio(1, 100), ISistema.TipoRet.OK, "Ciudades próximas a 1 en radio temporal máximo de 100: se pudo efectuar la operación exitosamente.");
-
+//
 
 
         p.imprimirResultadosPrueba();

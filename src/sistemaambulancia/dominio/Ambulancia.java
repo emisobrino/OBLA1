@@ -3,24 +3,25 @@ package sistemaambulancia.dominio;
 import TADChofer.ListaChofer;
 
 public class Ambulancia {
-    
-    public enum TipoEstado {DISPONIBLE, NO_DISPONIBLE, ATENDIENDO_EMERGENCIA};
-    
+
+    public enum TipoEstado {
+        DISPONIBLE, NO_DISPONIBLE, ATENDIENDO_EMERGENCIA
+    };
+
     private String id;
     private Integer cantidadViajes;
     private Ciudad ciudad;
     private ListaChofer choferes;
     private TipoEstado estado;
-    
-    public Ambulancia(String id, Ciudad ciudad) 
-    {
+
+    public Ambulancia(String id, Ciudad ciudad) {
         this.id = id;
         this.ciudad = ciudad;
         this.cantidadViajes = 0;
         this.choferes = new ListaChofer();
         this.estado = TipoEstado.DISPONIBLE;
     }
-    
+
     public String getId() {
         return id;
     }
@@ -60,11 +61,15 @@ public class Ambulancia {
     public void setEstado(TipoEstado Estado) {
         this.estado = Estado;
     }
-    
+
     @Override
-    public String toString()
-    {
-        return String.format("Datos ambulancia: {0}\n Estado: {1}\n Ciudad: {2}\n #Emergencias: {3}", 
-            this.id, this.estado, this.ciudad.getNombreCiudad(), this.cantidadViajes);
+    public String toString() {
+        return String.format("Datos ambulancia: {0}\n Estado: {1}\n Ciudad: {2}\n #Emergencias: {3}",
+                this.id, this.estado, this.ciudad.getNombreCiudad(), this.cantidadViajes);
+    }
+
+    public void eliminar() {
+        this.choferes.eliminarChoferes();
+
     }
 }

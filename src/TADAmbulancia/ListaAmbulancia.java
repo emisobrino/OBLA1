@@ -153,10 +153,9 @@ public class ListaAmbulancia {
 
                 //Agrego al contador cantidad de ambulancias en esa ciudad
                 cantidadAmbulanciasEnCiudad++;
-
-                //Obtengo valor del proximo nodo
-                aux = aux.getSiguiente();
             }
+            //Obtengo valor del proximo nodo
+            aux = aux.getSiguiente();
         }
 
         //A lo ultimo muestro en pantalla cantidad total de ambulancias
@@ -213,10 +212,17 @@ public class ListaAmbulancia {
         return true;
     }
 
-    public void eliminarAmbulancias(NodoListaAmbulancia nodo) {
-        if (nodo.getSiguiente() != null) {
-            eliminarAmbulancias(nodo.getSiguiente());
+    private void eliminarAmbulanciasRec(NodoListaAmbulancia nodo) {
+        if (nodo != null) {
+            nodo.eliminar();
+            eliminarAmbulanciasRec(nodo.getSiguiente());
         }
         nodo = null;
+    }
+
+    public void eliminarAmbulancias() {
+
+        eliminarAmbulanciasRec(inicio);
+
     }
 }

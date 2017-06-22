@@ -17,6 +17,10 @@ public class Ciudad {
         this.ambulancias = new ListaAmbulancia();
     }
 
+    public void setId(Integer id) {
+        this.ultimoId = id;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -39,6 +43,12 @@ public class Ciudad {
 
     @Override
     public String toString() {
-        return String.format("{0}> - <{1}>", this.getId(), this.getNombreCiudad());
+        return String.format("%1$s > - <%2$s>", this.getId(), this.getNombreCiudad());
     }
+    
+    public void eliminar()
+    {
+       this.ambulancias.eliminarAmbulancias();
+       setId(-1);
+   }
 }

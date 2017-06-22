@@ -1,11 +1,9 @@
-
 package TADCiudad;
 
 import sistemaambulancia.dominio.Ciudad;
 
-
 public class NodoListaCiudad {
-    
+
     private Ciudad dato;
     private NodoListaCiudad siguiente;
 
@@ -14,8 +12,6 @@ public class NodoListaCiudad {
         this.siguiente = null;
     }
 
-    
-    
     public Ciudad getDato() {
         return dato;
     }
@@ -31,8 +27,12 @@ public class NodoListaCiudad {
     public void setSiguiente(NodoListaCiudad siguiente) {
         this.siguiente = siguiente;
     }
-    
-        
-    
-    
+
+    void eliminar() {
+        if (dato != null) {
+            this.dato.eliminar();
+        }
+        dato = null;
+    }
+
 }
