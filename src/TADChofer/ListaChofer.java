@@ -4,73 +4,84 @@ import sistemaambulancia.dominio.Chofer;
 
 public class ListaChofer {
 
+    //Properties
     private NodoListaChofer inicio;
-
-    public NodoListaChofer getInicio() {
-        return inicio;
-    }
-
-    public void setInicio(NodoListaChofer inicio) {
-        this.inicio = inicio;
-    }
 
     //Constructor
     public ListaChofer() {
         this.inicio = null;
     }
+    
+    //Obtener inicio
+    public NodoListaChofer getInicio() {
+        return inicio;
+    }
 
+    //Setear inicio
+    public void setInicio(NodoListaChofer inicio) {
+        this.inicio = inicio;
+    }
+
+    //Es vacia
     public boolean esVacia() {
 
         return this.inicio == null;
     }
 
+    //Insertar inicio
     public void insertarInicio(Chofer chofer) {
+        //Creo nodo con chofer y le seteo inicio
         NodoListaChofer ch = new NodoListaChofer(chofer);
         ch.setSiguiente(inicio);
         inicio = ch;
     }
 
+    //Dato del inicio
     public Chofer head() {
-
         return inicio.getDato();
     }
 
+    //Tail
     public ListaChofer tail() {
-
+        //Creo lista chofer y seteo al inicio como el siguiente del inicio
         ListaChofer lista = new ListaChofer();
         lista.setInicio(inicio.getSiguiente());
         return lista;
     }
 
+    //Contains
     public boolean contains(String cedula) {
-
         Chofer c;
         ListaChofer aux;
         boolean encontre = false;
         aux = this;
 
+        //Mientras no sea vacia y no alla encontrado
         while (!aux.esVacia() && !encontre) {
+            //Chofer igual al inicio
             c = aux.head();
+            //Si la cedula del chofer es igual a la que busco
             if (c.getCedula().equals(cedula)) {
                 encontre = true;
             } else {
                 aux = aux.tail();
-
             }
         }
         return encontre;
-
     }
 
+    //Buscar
     public Chofer buscar(String cedula) {
-
         Chofer c = null;
         ListaChofer aux;
         boolean encontre = false;
         aux = this;
 
+        //Mientras no sea vacia y no alla encontrado
         while (!aux.esVacia() && !encontre) {
+            //Chofer igual al inicio
             c = aux.head();
+            //Si la cedula del chofer es igual a la que busco
             if (c.getCedula().equals(cedula)) {
                 encontre = true;
             } else {
@@ -78,13 +89,12 @@ public class ListaChofer {
                 c = null;
             }
         }
-
         return c;
-
     }
 
+    //Insertar ordenado
     public void insertarOrdenado(Chofer ch) {
-
+        //Si la lista esta vacia , inserto en el inicio al chofer
         if (this.esVacia()) {
             this.insertarInicio(ch);
         } else {
@@ -95,7 +105,6 @@ public class ListaChofer {
             NodoListaChofer nc = new NodoListaChofer(ch);
             nc.setSiguiente(aux.getSiguiente());
             aux.setSiguiente(nc);
-
         }
     }
 
@@ -113,10 +122,7 @@ public class ListaChofer {
         }
     }
 
-    public void vaciarLista() {
-        this.setInicio(null);
-    }
-
+    //Eliminar chofer
     public boolean eliminarChofer(String cedula) {
         //Creo nodo que voy a usar para recorrer
         NodoListaChofer nodoAnterior = inicio;
@@ -161,27 +167,10 @@ public class ListaChofer {
         //Devuelvo verdadero si se ejecuta correctamente la funcion
         return true;
     }
-
-//    public boolean eliminarChoferes() 
-//    {
-//        Si el nodo esta vacio entonces devuelvo false por que la lista esta vacia
-//        if (inicio == null) return false;
-//         
-//        while(true)
-//        {
-//            Creo nodo que voy a usar para recorrer
-//            NodoListaChofer nodoAnterior = inicio;
-//        
-//            nodoAnterior.setSiguiente(null);
-//            
-//            if(nodoAnterior.getSiguiente() == null)
-//            {
-//                nodoAnterior = null;
-//                return true;
-//            }
-//        }
-//    }
+    
+    //Eliminar choferes recursivo
     private void eliminarChoferesRec(NodoListaChofer nodo) {
+        //Si el nodo distinto de null, lo elimino
         if (nodo != null) {
             nodo.eliminar();
             eliminarChoferesRec(nodo.getSiguiente());
@@ -189,9 +178,8 @@ public class ListaChofer {
         nodo = null;
     }
 
+    //Eliminar choferes llama a eliminar choferes recursivo 
     public void eliminarChoferes() {
-
         eliminarChoferesRec(inicio);
-
     }
 }

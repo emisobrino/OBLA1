@@ -15,15 +15,17 @@ import org.junit.Test;
  *
  * @author docenteFI
  */
-public class pruebaBuscarAmbulancia {
+public class pruebaCambiarUbicacionAmbulancia {
 
     /**
+     * Si ciudadID no existe. Deberá imprimir en pantalla: “La ciudad ciudadID
+     * no existe.”      *
      * Si la ambulancia ambulanciaID no existe en el sistema de emergencias,
      * deberá imprimir en pantalla: “No existe una ambulancia con identificador
      * ambulanciaID.”
      */
     @Test
-    public void testBuscarUnaAmbulanciaInexisteConNingunaAmbulanciaEnElSistema() {
+    public void testCambiarUbicaciónUnaAmbulanciaInexisteConNingunaAmbulanciaEnElSistema() {
         FuncionalidadesComunes.ImprimirComienzoDeTest();
 
         ISistema s = new SistemaAmbulancia();
@@ -34,33 +36,14 @@ public class pruebaBuscarAmbulancia {
         s.agregarCiudad("Ciudad2");
         s.agregarCiudad("Ciudad2");
 
-        assertEquals(ISistema.TipoRet.ERROR, s.buscarAmbulancia("SBA1232"));
-
-        FuncionalidadesComunes.ImprimirFinDeTest();
-
-    }
-
-    @Test
-    public void testBuscarUnaAmbulanciaInexisteConAlMenosUnaAmbulanciaEnElSistema() {
-        FuncionalidadesComunes.ImprimirComienzoDeTest();
-
-        ISistema s = new SistemaAmbulancia();
-
-        s.crearSistemaDeEmergencias(10);
-
-        s.agregarCiudad("Ciudad1");
-        s.agregarCiudad("Ciudad2");
-        s.agregarCiudad("Ciudad3");
-
-        s.registrarAmbulancia("SBA1234", 2);
-        assertEquals(ISistema.TipoRet.ERROR, s.buscarAmbulancia("SBA1232"));
+        assertEquals(ISistema.TipoRet.ERROR, s.cambiarUbicacion("SBA1232",1));
 
         FuncionalidadesComunes.ImprimirFinDeTest();
 
     }
     
     @Test
-    public void testBuscarUnaAmbulanciaQueEsteDeshabilitadaEnElSistema() {
+    public void testCambiarUbicaciónUnaCiudadInexisteConNingunaAmbulanciaEnElSistema() {
         FuncionalidadesComunes.ImprimirComienzoDeTest();
 
         ISistema s = new SistemaAmbulancia();
@@ -69,51 +52,37 @@ public class pruebaBuscarAmbulancia {
 
         s.agregarCiudad("Ciudad1");
         s.agregarCiudad("Ciudad2");
-        s.agregarCiudad("Ciudad3");
+        s.agregarCiudad("Ciudad2");
+
+        assertEquals(ISistema.TipoRet.ERROR, s.cambiarUbicacion("SBA1232",10));
+
+        FuncionalidadesComunes.ImprimirFinDeTest();
+
+    }
+
+    @Test
+    public void testCambiarUbicacionUnaAmbulanciaInexisteConAlMenosUnaAmbulanciaEnElSistema() {
+        FuncionalidadesComunes.ImprimirComienzoDeTest();
+
+        ISistema s = new SistemaAmbulancia();
+
+        s.crearSistemaDeEmergencias(10);
+
+        s.agregarCiudad("Ciudad1");
+        s.agregarCiudad("Ciudad2");
+        s.agregarCiudad("Ciudad2");
 
         s.registrarAmbulancia("SBA1234", 2);
-        s.registrarAmbulancia("SBA1233", 2);
-        s.registrarAmbulancia("SBA1236", 2);
-        s.registrarAmbulancia("SBA1237", 2);
-        
-        assertEquals(ISistema.TipoRet.OK, s.deshabilitarAmbulancia("SBA1234"));
-        assertEquals(ISistema.TipoRet.OK, s.buscarAmbulancia("SBA1234"));
+        assertEquals(ISistema.TipoRet.ERROR, s.cambiarUbicacion("SBA1232",1));
 
         FuncionalidadesComunes.ImprimirFinDeTest();
 
     }
 
-    @Test
-    public void testBuscarUnaAmbulanciaValidaConVariasAmbulanciaEnElSistema() {
-        FuncionalidadesComunes.ImprimirComienzoDeTest();
-
-        ISistema s = new SistemaAmbulancia();
-
-        s.crearSistemaDeEmergencias(10);
-
-        s.agregarCiudad("Ciudad1");
-        s.agregarCiudad("Ciudad2");
-        s.agregarCiudad("Ciudad2");
-
-        s.registrarAmbulancia("SBA1234", 1);
-        s.registrarAmbulancia("SBA1235", 1);
-        s.registrarAmbulancia("SBA1236", 1);
-        s.registrarAmbulancia("SBA1237", 1);
-        s.registrarAmbulancia("SBA1238", 1);
-        s.registrarAmbulancia("SBA1239", 1);
-        s.registrarAmbulancia("SBA1210", 1);
-        s.registrarAmbulancia("SBA1211", 1);
-        s.registrarAmbulancia("SBA1212", 2);
-        s.registrarAmbulancia("SBA1213", 2);
-        assertEquals(ISistema.TipoRet.OK, s.buscarAmbulancia("SBA1234"));
-
-
-        FuncionalidadesComunes.ImprimirFinDeTest();
-
-    }
+    
 
     @Test
-    public void testBuscarVariasAmbulanciasValidasConVariasAmbulanciaEnElSistema() {
+    public void testCambiarUbicacionUnaAmbulanciaValidaConVariasAmbulanciaEnElSistema() {
         FuncionalidadesComunes.ImprimirComienzoDeTest();
 
         ISistema s = new SistemaAmbulancia();
@@ -134,13 +103,15 @@ public class pruebaBuscarAmbulancia {
         s.registrarAmbulancia("SBA1211", 1);
         s.registrarAmbulancia("SBA1212", 2);
         s.registrarAmbulancia("SBA1213", 2);
-        assertEquals(ISistema.TipoRet.OK, s.buscarAmbulancia("SBA1235"));
-        assertEquals(ISistema.TipoRet.OK, s.buscarAmbulancia("SBA1236"));
- 
+        System.out.println("ESPERADO: Se espera que cambie la información que se imprime de ciudad1 a ciudad2");
+        s.buscarAmbulancia("SBA1234");
+        assertEquals(ISistema.TipoRet.OK, s.cambiarUbicacion("SBA1234",2));
+        s.buscarAmbulancia("SBA1234");
 
         FuncionalidadesComunes.ImprimirFinDeTest();
 
     }
-    
-    
+
+  
+
 }

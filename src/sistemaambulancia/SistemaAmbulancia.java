@@ -11,6 +11,7 @@ import sistemaambulancia.dominio.Ciudad;
 
 public class SistemaAmbulancia implements ISistema {
 
+    //Properties
     private int mapa[][];
     private ListaAmbulancia listaAmbulancias;
     private ListaChofer listaChoferes;
@@ -90,12 +91,15 @@ public class SistemaAmbulancia implements ISistema {
     @Override
     public TipoRet registrarAmbulancia(String ambulanciaID, int ciudadID) {
         //Si no existe el id de ambulancia en la listaAmbulancias entonces creo
-        //la ciudad referenciada a ese ciudadId para enviar por parametro al crear la nueva ambulancia.
         if (!listaAmbulancias.contains(ambulanciaID)) {
+            //la ciudad referenciada a ese ciudadId para enviar por parametro al crear la nueva ambulancia.
             Ciudad ciu = listaCiudades.buscar(ciudadID);
 
             if (ciu != null) {
+                //Si la ciudad no esta vacia entonces creo ambulancia 
                 Ambulancia ambu = new Ambulancia(ambulanciaID, ciu);
+                
+                //Agrego ambulancia a la ciudad y a la lista del sistema
                 this.listaAmbulancias.insertarOrdenado(ambu);
                 ciu.getAmbulancias().insertarOrdenado(ambu);
                 return TipoRet.OK;
@@ -254,10 +258,11 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet listarCiudades() {
-
+        //Si la lista esta vacia
         if (listaCiudades.esVacia()) {
             System.out.println("No existen ciudades en el mapa.");
         } else {
+            //las muestro 
             System.out.println("Ciudades en el mapa" + "\n");
             listaCiudades.mostrarCiudades();
         }
@@ -324,17 +329,24 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet ambulanciaMasCercana(int ciudadID) {
-
-        if (listaCiudades.buscar(ciudadID) != null) {
-
-            Ciudad ciudad = listaCiudades.buscar(ciudadID);
+        //busco ciudad
+        Ciudad ciudad = listaCiudades.buscar(ciudadID);
+        
+        if (ciudad != null) {
             // Si existe la ciudad y tiene ambulancias dentro de ella.
-            if (!ciudad.getAmbulancias().esVacia()) {
+            if (!ciudad.getAmbulancias().esVacia()) 
+            {
+                //Guardo lista ambulancias
                 ListaAmbulancia lista = ciudad.getAmbulancias();
                 System.out.println("Ambulancia más cercana a: " + ciudadID
                         + " - " + ciudad.getNombreCiudad());
-                while (!lista.esVacia()) {
+                
+                //Si la lista no esta vacia entonces la recorro
+                while (!lista.esVacia()) 
+                {
                     Ambulancia a = lista.head();
+                    
+                    //Si su estado es disponible la muestro en pantalla
                     if (a.getEstado() == Ambulancia.TipoEstado.DISPONIBLE) {
 
                         System.out.println("Ambulancia: " + a.getId());
@@ -347,7 +359,8 @@ public class SistemaAmbulancia implements ISistema {
                     lista = lista.tail();
                 }
                 return TipoRet.OK;
-            } // Si existe la ciudad pero no tiene ambulancias, se buscara la ciudad mas cercana con ambulancias 
+            }
+            // Si existe la ciudad pero no tiene ambulancias, se buscara la ciudad mas cercana con ambulancias 
             else {
                 int minimo = Integer.MAX_VALUE;
                 int ciudadMasCercana = -1;
@@ -409,6 +422,7 @@ public class SistemaAmbulancia implements ISistema {
                     minimo = mapa[ciudadOrigen][ciudadDestino];
                 }
 
+                //Recorro matriz
                 for (int i = 0; i < columnas; i++) {
                     if (mapa[ciudadOrigen][i] != 0 && mapa[ciudadOrigen][i] != -1
                             && mapa[ciudadDestino][i] != 0 && mapa[ciudadDestino][i] != -1) {
@@ -489,10 +503,13 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet ciudadesEnRadio(int ciudadID, int duracionViaje) {
+        //Si la ciudad es distinta de null
         if (this.listaCiudades.buscar(ciudadID) != null) {
+            //Si la duracion del viaje es >0
             if (duracionViaje > 0) {
                 System.out.println("Ciudades en radio de <" + duracionViaje + "> minutos a la ciudad: " + ciudadID + ": ");
-
+                
+                //Recorro la fila en el array para ver las duraciones que sea menor a la dada por parametro
                 for (int i = 0; i < mapa.length; i++) {
                     if (mapa[ciudadID][i] < duracionViaje && mapa[ciudadID][i] != -1) {
                         System.out.println("\n \t Ciudad: " + i + " a " + mapa[ciudadID][i] + " minutos");

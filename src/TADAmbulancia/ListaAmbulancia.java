@@ -2,16 +2,18 @@ package TADAmbulancia;
 
 import sistemaambulancia.dominio.Ambulancia;
 
-public class ListaAmbulancia {
-
+public class ListaAmbulancia 
+{
+    //Properties
     private NodoListaAmbulancia inicio;
     private int cantActual;
 
-    //Getter Setter
+    //Obtener inicio 
     public NodoListaAmbulancia getInicio() {
         return inicio;
     }
 
+    //Obtener setter
     public void setInicio(NodoListaAmbulancia inicio) {
         this.inicio = inicio;
     }
@@ -23,13 +25,17 @@ public class ListaAmbulancia {
 
     }
 
-    //Metodos
+    //Es vacia
     public boolean esVacia() {
         return this.inicio == null;
     }
 
+    //Insertar en el inicio de la lista
     private void insertarInicio(Ambulancia ambulancia) {
+        //Creo nodo de lista ambulancia
         NodoListaAmbulancia na = new NodoListaAmbulancia(ambulancia);
+        
+        //Establesco el nodo como inicio
         na.setSiguiente(inicio);
         inicio = na;
         this.cantActual++;
@@ -40,47 +46,35 @@ public class ListaAmbulancia {
         return this.inicio.getDato();
     }
 
-    //pre lista no es Vacia
-//    public ListaAmbulancia tail() {
-//
-//        ListaAmbulancia lista = new ListaAmbulancia();
-//        lista.setInicio(inicio.getSiguiente());
-//        return lista;
-//    }
-    //pre lista no es Vacia
+    //tail
     public ListaAmbulancia tail() {
-
+        //ccreo lista ambulancia
         ListaAmbulancia lista = new ListaAmbulancia();
+        //A la lista le establesco el inicio como el siguiente nodo y devuelvo la lista
         lista.setInicio(inicio.getSiguiente());
         return lista;
     }
-
-    /*
-    while(!list.esVacia()&&!encontre)
-    Ambulancia a = list.head()
-    if(a.getId==id)
-    encontre =true
-
-    list=list.tail
-     */
-    //se le puede pasar el tipo ambulancia tmb
+    
+    //Contains
     public boolean contains(String Id) {
         Ambulancia a;
         ListaAmbulancia aux;
         boolean encontre = false;
         aux = this;
 
+        //Mientras no sea vacia ni alla encontrado nada
         while (!aux.esVacia() && !encontre) {
+            //la ambulancia a , es igual a la ambulancia en el inicio de la lista
             a = aux.head();
+            //Si es el id de la ambulancia es la que busco entonces devuelvo true 
             if (a.getId().equals(Id)) {
                 encontre = true;
             } else {
+                //si no uso tail para avanzar
                 aux = aux.tail();
             }
         }
-
         return encontre;
-
     }
 
     public Ambulancia buscar(String Id) {
@@ -90,41 +84,46 @@ public class ListaAmbulancia {
         boolean encontre = false;
         aux = this;
 
+        //Mientras no sea vacia ni alla encontrado nada
         while (!aux.esVacia() && !encontre) {
             a = aux.head();
+            //Si es el id de la ambulancia es la que busco entonces devuelvo true 
             if (a.getId().equals(Id)) {
                 encontre = true;
             } else {
+                //si no uso tail para avanzar
                 aux = aux.tail();
                 a = null;
             }
         }
-
+        //Devuelvo ambulancia
         return a;
 
     }
 
-    // pre lista ordenada
+    //Insertar ordenado
     public void insertarOrdenado(Ambulancia amb) {
-
+        //Si la lista esta vacia inserto en el inicio
         if (this.esVacia()) {
             this.insertarInicio(amb);
         } else {
+            //Guardo nodo inicio y mientras no sea vacio y el compare to vaya ordenando
             NodoListaAmbulancia aux = inicio;
             while (aux.getSiguiente() != null && aux.getSiguiente().getDato().getId().compareTo(amb.getId()) == -1) {
                 aux = aux.getSiguiente();
             }
+            //Creo nuevo nodo con la ambulancia 
             NodoListaAmbulancia na = new NodoListaAmbulancia(amb);
             na.setSiguiente(aux.getSiguiente());
             aux.setSiguiente(na);
-            this.cantActual++;
-
+            this.cantActual++;  
         }
     }
 
+    //Mostrar ambulancias
     public void mostrarAmbulancias() {
         //pre: se asume que la lista de ambulancias no es vacia
-
+        //Referenceo al nodo inicio
         NodoListaAmbulancia aux = inicio;
 
         //Si el nodo inicio no esta vacio
@@ -139,6 +138,7 @@ public class ListaAmbulancia {
         }
     }
 
+    //Mostrar ambulancias por ciudadID
     public void mostrarAmbulanciasPorCiudad(int ciudadID) {
         //pre: se asume que la lista de ambulancias no es vacia
         NodoListaAmbulancia aux = inicio;
@@ -162,11 +162,7 @@ public class ListaAmbulancia {
         System.out.println("Total Ambulancias disponibles: " + cantidadAmbulanciasEnCiudad);
     }
 
-    public void vaciarLista() {
-        this.setInicio(null);
-        this.cantActual = 0;
-    }
-
+    //Eliminar ambulancia
     public boolean eliminarAmbulancia(String ambulanciaID) {
         //Creo nodo que voy a usar para recorrer
         NodoListaAmbulancia nodoAnterior = inicio;
@@ -212,7 +208,9 @@ public class ListaAmbulancia {
         return true;
     }
 
+    //Eliminar ambulancia recursivo
     private void eliminarAmbulanciasRec(NodoListaAmbulancia nodo) {
+        //Si el nodo distinto de null elimina al nodo
         if (nodo != null) {
             nodo.eliminar();
             eliminarAmbulanciasRec(nodo.getSiguiente());
@@ -220,6 +218,7 @@ public class ListaAmbulancia {
         nodo = null;
     }
 
+    //Eliminar ambulancia llama a eliminar ambulancia recursivo
     public void eliminarAmbulancias() {
 
         eliminarAmbulanciasRec(inicio);
