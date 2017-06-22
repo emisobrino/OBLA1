@@ -18,8 +18,11 @@ public class SistemaAmbulancia implements ISistema {
 
     @Override
     public TipoRet crearSistemaDeEmergencias(int cantidadCiudades) {
+        //Inicializo las listas
         listaCiudades = new ListaCiudad(cantidadCiudades);
-
+        listaAmbulancias = new ListaAmbulancia();
+        listaChoferes = new ListaChofer();
+        
         if (cantidadCiudades <= 0) {
             System.out.println("La cantidad de ciudades es inferior a 1.");
             return TipoRet.ERROR;
@@ -90,7 +93,7 @@ public class SistemaAmbulancia implements ISistema {
 
             if (ciu != null) {
                 Ambulancia ambu = new Ambulancia(ambulanciaID, ciu);
-                listaAmbulancias.insertarOrdenado(ambu);
+                this.listaAmbulancias.insertarOrdenado(ambu);
                 ciu.getAmbulancias().insertarOrdenado(ambu);
                 return TipoRet.OK;
             } else {

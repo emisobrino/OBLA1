@@ -4,13 +4,17 @@ import TADAmbulancia.ListaAmbulancia;
 
 public class Ciudad {
     
-    private static Integer id=-1;
+    private static int ultimoId = -1;
+    private Integer id;
     private String nombreCiudad;
     private ListaAmbulancia ambulancias;
 
-    public Ciudad(String nombreCiudad) {
+    public Ciudad(String nombreCiudad) 
+    {
         this.nombreCiudad = nombreCiudad;
-        this.id=id++;
+        ultimoId++;
+        this.id = ultimoId;
+        this.ambulancias = new ListaAmbulancia();
     }
 
     public Integer getId() {

@@ -25,24 +25,28 @@ public class ListaAmbulancia {
 
     //Metodos
     public boolean esVacia() {
-
         return this.inicio == null;
     }
 
-    public void insertarInicio(Ambulancia ambulancia) {
+    private void insertarInicio(Ambulancia ambulancia) {
         NodoListaAmbulancia na = new NodoListaAmbulancia(ambulancia);
         na.setSiguiente(inicio);
         inicio = na;
         this.cantActual++;
     }
 
-    //pre lista no es Vacia
+    //Inicio dato
     public Ambulancia head() {
-
-        return inicio.getSiguiente().getDato();
-
+        return this.inicio.getDato();
     }
 
+    //pre lista no es Vacia
+//    public ListaAmbulancia tail() {
+//
+//        ListaAmbulancia lista = new ListaAmbulancia();
+//        lista.setInicio(inicio.getSiguiente());
+//        return lista;
+//    }
     //pre lista no es Vacia
     public ListaAmbulancia tail() {
 
@@ -61,7 +65,6 @@ public class ListaAmbulancia {
      */
     //se le puede pasar el tipo ambulancia tmb
     public boolean contains(String Id) {
-
         Ambulancia a;
         ListaAmbulancia aux;
         boolean encontre = false;
@@ -128,102 +131,92 @@ public class ListaAmbulancia {
         while (aux != null) {
             //Mostramos la ambulancia con el formato de informe
             System.out.println(aux.getDato().getId() + "> - <" + aux.getDato().getEstado()
-                    + "> - <" + aux.getDato().getCiudad() + ">"
+                    + "> - <" + aux.getDato().getCiudad().getNombreCiudad() + ">"
             );
 
             //Obtengo valor del proximo nodo
             aux = aux.getSiguiente();
         }
     }
-    
+
     public void mostrarAmbulanciasPorCiudad(int ciudadID) {
         //pre: se asume que la lista de ambulancias no es vacia
         NodoListaAmbulancia aux = inicio;
         int cantidadAmbulanciasEnCiudad = 0; //Contador de ambulancias en ciudad dada por parametro
-        
+
         //Mientras el nodo aux no sea vacio
         while (aux != null) {
             //Si la ambulancia que esta en el nodo, el id de su ciudad es igual al parametro
-            if(aux.getDato().getCiudad().getId() == ciudadID)
-            {
+            if (aux.getDato().getCiudad().getId() == ciudadID) {
                 //Mostramos la ambulancia con el formato de informe
                 System.out.println("Ambulancia: \t \t" + aux.getDato().getId());
 
                 //Agrego al contador cantidad de ambulancias en esa ciudad
                 cantidadAmbulanciasEnCiudad++;
-                
+
                 //Obtengo valor del proximo nodo
                 aux = aux.getSiguiente();
             }
         }
-        
+
         //A lo ultimo muestro en pantalla cantidad total de ambulancias
         System.out.println("Total Ambulancias disponibles: " + cantidadAmbulanciasEnCiudad);
     }
 
-    public void vaciarLista() 
-    {
-       this.setInicio(null);
-       this.cantActual = 0;
+    public void vaciarLista() {
+        this.setInicio(null);
+        this.cantActual = 0;
     }
-    
-    public boolean eliminarAmbulancia(String ambulanciaID) 
-    {
+
+    public boolean eliminarAmbulancia(String ambulanciaID) {
         //Creo nodo que voy a usar para recorrer
         NodoListaAmbulancia nodoAnterior = inicio;
-        
+
         //Si el nodo esta vacio entonces devuelvo false 
-        if (nodoAnterior == null) return false;
-         
-        //Si la ambulancia que hay en el nodo es igual al ambulancia que me pasan por parametro
+        if (nodoAnterior == null) {
+            return false;
+        } //Si la ambulancia que hay en el nodo es igual al ambulancia que me pasan por parametro
         //Entonces establesco el inicio como el siguiente
-        else if (nodoAnterior.getDato() == buscar(ambulanciaID)) 
-        {
+        else if (nodoAnterior.getDato() == buscar(ambulanciaID)) {
             inicio = inicio.getSiguiente();
             return true;
         }
-        
+
         //Mientras sea verdadero
-        while (true) 
-        {
+        while (true) {
             //Guardo valor del nodo siguiente
             NodoListaAmbulancia nodoSiguiente = nodoAnterior.getSiguiente();
-                    
+
             //Si el nodo esta vacio devuelvo falso y salgo de la funcion
-            if (nodoSiguiente == null) 
-            { 
+            if (nodoSiguiente == null) {
                 return false;
-            } 
-            //Si la ambulancia que hay en el nodo siguiente es igual al que busco entonces salgo del while
+            } //Si la ambulancia que hay en el nodo siguiente es igual al que busco entonces salgo del while
             //Y voy a la parte de abajo del algoritmo
-            else if (nodoSiguiente.getDato() == buscar(ambulanciaID)) 
-            {
+            else if (nodoSiguiente.getDato() == buscar(ambulanciaID)) {
                 break;
             }
-            
+
             //Guardo en nodoanterior el valor del proximo nodo, para seguir recorriendo la lista
             nodoAnterior = nodoSiguiente;
         }
-        
+
         //Guardo de nuevo el valor del nodo siguiente
         NodoListaAmbulancia nodoSiguiente = nodoAnterior.getSiguiente();
         //Al nodo anterior le seteo el nuevo valor siguiente, que va ser el nodo que le sigue del que quiero borrar
         nodoAnterior.setSiguiente(nodoSiguiente.getSiguiente());
         //Al nodo que quiero borrar le seteo su siguiente como null, para que pierda enlaze con la lista
         nodoSiguiente.setSiguiente(null);
-        
+
         //Recolector de Basura (Garbage Collection) 
         System.gc();
         //Devuelvo verdadero si se ejecuta correctamente la funcion
         return true;
     }
-    
-    public void eliminarAmbulancias(NodoListaAmbulancia nodo)
-    {
-        if (nodo.getSiguiente()!= null)
-        {
+
+    public void eliminarAmbulancias(NodoListaAmbulancia nodo) {
+        if (nodo.getSiguiente() != null) {
             eliminarAmbulancias(nodo.getSiguiente());
         }
-        nodo=null;
+        nodo = null;
     }
 }

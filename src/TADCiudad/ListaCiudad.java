@@ -51,7 +51,7 @@ public class ListaCiudad {
     }
 
     public Ciudad head() {
-        return inicio.getSiguiente().getDato();
+        return inicio.getDato();
     }
 
     public ListaCiudad tail() {
